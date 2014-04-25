@@ -30,7 +30,11 @@ public class Home extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");
 		PrintWriter pw = response.getWriter();
-			
+		pw.println("<html> \n" +
+				"<head> \n" +
+				"<title>Roosevelt Dating Website</title> \n" +
+				"</head> \n" +
+				"<H1>Welcome to Roosevelts Dating Website</H1> \n" );	
 		
 	}
 
