@@ -4,9 +4,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Roosevelt Dating Website</title>
 </head>
 <body>
-
+	<% request.get %>
+	<H1>Welcome to Roosevelts Dating Website</H1>
+	<p>If you are a new user please register</p>
+	<a href="/Register.html"> Register</a>
+	<p>Log in</p>
+	<form>
+		<form action="SignIn" method="Post">
+			UserName: <input type="text" name="UserName" required><br>
+			Password: <input type="password" name="Password" required><br>
+			<input type="submit" value="Submit">
+		</form>
 </body>
 </html>
