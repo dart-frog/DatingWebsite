@@ -28,6 +28,8 @@ public class Home extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("Home.jsp").forward(request, response);
+		/*
 		response.setContentType("text/html");
 		PrintWriter pw = response.getWriter();
 		pw.println("<html> \n" +
@@ -35,8 +37,9 @@ public class Home extends HttpServlet {
 				"<title>Roosevelt Dating Website</title> \n" +
 				"</head> \n" +
 				"<H1>Welcome to Roosevelts Dating Website</H1> \n" );	
-		
+	*/	
 	}
+	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

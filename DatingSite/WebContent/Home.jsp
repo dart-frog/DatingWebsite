@@ -5,12 +5,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Roosevelt Dating Website</title>
+<%if(false) %>
 <%response.sendRedirect("Register.html"); %>
 </head>
 <body>
 	<H1>Welcome to Roosevelts Dating Website</H1>
 	<p>If you are a new user please register</p>
-	<a href="Register.jsp"> Register</a>
+	<a href= "Register.jsp"> Register</a>
 	<p>Log in</p>
 	<form>
 		<form action="SignIn" method="Post">
