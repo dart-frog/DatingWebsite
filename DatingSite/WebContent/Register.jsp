@@ -9,13 +9,13 @@
 <body>
 	<h1>Please Register</h1>
 	<div align="left">
-		<form action = "RegistrationHandler.java" method = "post">
+		<form action = "RegistrationHandler" method = "post">
 			<span align="right"> 
 				Email: <input type="email" placeholder="you@example.com" name='email' required><br>
 				Password: <input type="password" name="password" required><br>
 				Retype Password: <input type="password" name="repassword" required><br>
 				I am a Roosevelt Student: <input type="checkbox"name="studentstatus"><br> 
-				<input type="submit" value="Submit;">
+				<input type="submit" value="Submit">
 				
 			</span>
 		</form>

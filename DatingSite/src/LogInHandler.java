@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class RegistrationHandler
+ * Servlet implementation class LogInHandler
  */
-@WebServlet("/RegistrationHandler")
-public class RegistrationHandler extends HttpServlet {
+@WebServlet("/LogInHandler")
+public class LogInHandler extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RegistrationHandler() {
+    public LogInHandler() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,12 +33,7 @@ public class RegistrationHandler extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//if (request.getParameter("password").equals(request.getParameter("repassword"))){ 
-			String email = request.getParameter("email");
-			String password = request.getParameter("password");
-			Global.addNewUser(email, password);
-			response.sendRedirect("Home.jsp");
-		//}
+		Global.addNewUser("email", "password");
 	}
 
 }

@@ -5,8 +5,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Roosevelt Dating Website</title>
-<%if(false) %>
+<%if(false){ %>
 <%response.sendRedirect("Register.html"); %>
+<% } %>
 </head>
 <body>
 	<H1>Welcome to Roosevelts Dating Website</H1>
@@ -14,9 +15,9 @@
 	<a href= "Register.jsp"> Register</a>
 	<p>Log in</p>
 	<form>
-		<form action="SignIn" method="Post">
-			UserName: <input type="text" name="UserName" required><br>
-			Password: <input type="password" name="Password" required><br>
+		<form action="LogInHandler" method="post">
+			Email: <input type="email" name="email" required><br>
+			Password: <input type="password" name="password" required><br>
 			<input type="submit" value="Submit">
 		</form>
 </body>

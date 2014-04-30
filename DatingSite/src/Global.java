@@ -15,13 +15,13 @@ public class Global {
 	public static boolean checkSessionID(){
 		return false;
 	}
-	public static boolean addNewUser(String username, String password){
+	public static boolean addNewUser(String email, String password){
 		Connect stream = new Connect();
 		Connection con = stream.getConnection();
 		try{
 			String SQL = "INSERT INTO datingsite.RegisteredUsers (email, password) VALUES (?,?)"; 
 			PreparedStatement pstmt = con.prepareStatement(SQL);
-			pstmt.setString(1, username);
+			pstmt.setString(1, email);
 			pstmt.setString(2, password);
 			int count = pstmt.executeUpdate();
 			System.out.println("ROWS AFFECTED:" + count);
@@ -34,5 +34,25 @@ public class Global {
 		}
 	
 	}
+	public static boolean LogInUser(String email, String password){
+		Connect stream = new Connect();
+		Connection con = stream.getConnection();
+		try{
+			String SQL = "SELECT email, password FROM datingsite.RegisteredUsers(email, password) VALUES (?,?)";
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(SQL);
+			
+			HashMap users = new HashMap();
+			while(rs.next()){
+				users.put(rs.getString("email"), rs.getString(""));
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return false;
+	}
+		
+	
 	
 }
