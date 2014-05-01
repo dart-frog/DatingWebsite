@@ -8,9 +8,11 @@
 </head>
 <body>
 <%for(int i = 1; i <= 7; i++) {%>
-	<font color=green size=<%=i %>><%=i %></font>
+	<font color=red size=<%=i %>><%=i %></font>
+	<%=session.getAttribute("testParameter") %>
 	<br>
 <%} %>
+<%session.setAttribute("testParameter", null); %>
 <%out.println(request.getLocalName()); %>
 </body>
 </html>

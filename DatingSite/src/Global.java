@@ -56,7 +56,4 @@ public class Global {
 		}
 		return false;
 	}
-		
-	
-	
 }
