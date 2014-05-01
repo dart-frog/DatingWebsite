@@ -6,9 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Roosevelt Dating Website</title>
 </head>
-	<% if(Global.checkSessionID() == true){ %>
-		<p> Hello <% %>
-	<% } %>
+	<p> this is a profile page wooo<p>
 <body>
 
 </body>

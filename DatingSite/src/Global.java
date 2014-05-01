@@ -5,6 +5,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.Cookie;
@@ -34,17 +35,20 @@ public class Global {
 		}
 	
 	}
-	public static boolean LogInUser(String email, String password){
+	public static boolean doesUserExists(String email, String password){
 		Connect stream = new Connect();
 		Connection con = stream.getConnection();
 		try{
-			String SQL = "SELECT email, password FROM datingsite.RegisteredUsers(email, password) VALUES (?,?)";
+			String SQL = "SELECT email, password FROM datingsite.RegisteredUsers;";
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(SQL);
 			
-			HashMap users = new HashMap();
+			Map users = new HashMap();
 			while(rs.next()){
-				users.put(rs.getString("email"), rs.getString(""));
+				users.put(rs.getString("email"), rs.getString("password"));
+			}
+			if(users.get(email).equals(password)){
+				return true;
 			}
 		}
 		catch(Exception e){

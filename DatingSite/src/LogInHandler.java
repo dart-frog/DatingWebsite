@@ -1,6 +1,8 @@
 
 
 import java.io.IOException;
+import java.util.UUID;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,7 +35,17 @@ public class LogInHandler extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Global.addNewUser("email", "password");
+		String email = request.getParameter("email");
+		System.out.print("made it");
+		String password = request.getParameter("password");
+		if (Global.doesUserExists(email, password)){
+			response.sendRedirect("ProfilePage.jsp");
+			String uniqUserID = UUID.randomUUID().toString();
+		}
+		else{
+			response.sendRedirect("Home.jsp");
+		}
+		
 	}
 
 }

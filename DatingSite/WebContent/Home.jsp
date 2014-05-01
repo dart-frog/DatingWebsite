@@ -14,11 +14,10 @@
 	<p>If you are a new user please register</p>
 	<a href= "Register.jsp"> Register</a>
 	<p>Log in</p>
-	<form>
-		<form action="LogInHandler" method="post">
-			Email: <input type="email" name="email" required><br>
-			Password: <input type="password" name="password" required><br>
-			<input type="submit" value="Submit">
-		</form>
+	<form action="LogInHandler" method="post">
+		Email: <input type="text" name="email" required><br>
+		Password: <input type="password" name="password" required><br>
+		<input type="submit" value="Submit">
+	</form>
 </body>
 </html>
