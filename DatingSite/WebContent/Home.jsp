@@ -6,7 +6,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Roosevelt Dating Website</title>
 <%if(false){ %>
-<%response.sendRedirect("Register.html"); %>
+<%session.setAttribute("testParameter", "Hello!"); %>
+<%response.sendRedirect("JSPTest.jsp"); %>
 <% } %>
 </head>
 <body>
