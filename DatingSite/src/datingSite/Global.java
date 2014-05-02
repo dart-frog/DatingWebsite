@@ -12,8 +12,7 @@ import java.util.UUID;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-
-import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
+import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/Global")
 public class Global {
@@ -43,20 +42,24 @@ public class Global {
 	}
 	
 	public static boolean isSessionValid(HttpServletRequest request) {
+		return getUserIDFromRequest(request) != -1;
+	}
+	
+	public static int getUserIDFromRequest(HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
 		Cookie cookie = getSessionCookie(cookies);
-		if(cookie == null) return false;
+		if(cookie == null) return -1;
 		String sessionID = cookie.getValue().trim();
 		
 		try {
 			String query = "SELECT UserID FROM datingsite.Sessions WHERE SessionID = ?";
 			ResultSet rs = executeQueryWithParams(query, sessionID);
-			if(rs.isAfterLast()) return false;
+			rs.next();
+			return rs.getInt(1);
 		} catch(Exception e) {
 			e.printStackTrace();
-			return false;
+			return -1;
 		}
-		return true;
 	}
 	
 	public static boolean addNewUser(String email, String password){
@@ -77,6 +80,10 @@ public class Global {
 			return false;
 		}
 	
+	}
+	
+	public static boolean doLogIn(String username, String password) {
+		return false;
 	}
 	
 	public static String getUserInfo(String infoType, String userID) {
@@ -110,26 +117,33 @@ public class Global {
 		}
 	}
 	
-	public static boolean doesUserExist(String email, String password){
+	public static Cookie tryLogIn(String email, String password){
 		Connect stream = new Connect();
 		Connection con = stream.getConnection();
 		try{
-			String SQL = "SELECT email, password FROM datingsite.Users;";
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(SQL);
+			String query = "SELECT ID FROM datingsite.Users WHERE Email = ? AND Password = ?;";
+			ResultSet rs = executeQueryWithParams(query, email, password);
+			rs.next();
+			if(rs.isAfterLast()) return null;
+			String userID = rs.getString(1);
+			rs.close();
 			
-			Map users = new HashMap();
-			while(rs.next()){
-				users.put(rs.getString("email"), rs.getString("password"));
-			}
-			if(users.get(email).equals(password)){
-				return true;
-			}
+			String sessionID = UUID.randomUUID().toString();
+			query = "INSERT INTO datingsite.Sessions (UserID, SessionID) VALUES (?,?)"; 
+			PreparedStatement pstmt = con.prepareStatement(query);
+			pstmt.setString(1, userID);
+			pstmt.setString(2, sessionID);
+			int count = pstmt.executeUpdate();
+			System.out.println("ROWS AFFECTED:" + count);
+			if(count == 0) throw new IllegalStateException();
+			pstmt.close();
+			
+			return new Cookie("sessionID", userID);
 		}
 		catch(Exception e){
 			e.printStackTrace();
+			return null;
 		}
-		return false;
 	}
 	
 	public static boolean isEmailAvalible(String email){

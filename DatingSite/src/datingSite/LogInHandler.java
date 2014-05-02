@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class LogInHandler
@@ -38,16 +39,16 @@ public class LogInHandler extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email = request.getParameter("email");
 		System.out.print("made it");
-		String password = request.getParameter("password");
-		if (Global.doesUserExist(email, password)){
+		String password = Integer.toString(Global.hash(request.getParameter("password")));
+		try {
+			Cookie cookie = Global.tryLogIn(email, password, response);
 			response.sendRedirect("ProfilePage.jsp");
-			String uniqUserID = UUID.randomUUID().toString();
-			
-		}
-		else{
+		} catch(Exception e) {
+			e.printStackTrace();
+			HttpSession session = request.getSession();
+			session.setAttribute("error", "An error occurred.");
 			response.sendRedirect("Home.jsp");
 		}
-		
 	}
 
 }

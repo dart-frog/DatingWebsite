@@ -11,7 +11,10 @@
 <%} %>
 </head>
 <body>
-	<%=Global.getAllUserInfo("1").toString() %>
+	<%if(session.getAttribute("error") != null) { %>
+		<span style="color:red;"><%=session.getAttribute("error") %></span>
+		<%session.setAttribute("error", null); %>
+	<%} %>
 	<H1>Welcome to Roosevelts Dating Website</H1>
 	<p>If you are a new user please register</p>
 	<a href= "Register.jsp"> Register</a>
