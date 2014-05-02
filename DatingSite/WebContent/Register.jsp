@@ -7,6 +7,10 @@
 <title>Roosevelt Dating Website</title>
 </head>
 <body>
+	<%if(session.getAttribute("error") != null) { %>
+	<span style="color:red;"><%=session.getAttribute("error") %></span>
+	<%session.setAttribute("error", null); %>
+	<%} %>
 	<h1>Please Register</h1>
 	<div align="left">
 		<form action = "RegistrationHandler" method = "post">

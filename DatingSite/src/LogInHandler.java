@@ -38,7 +38,7 @@ public class LogInHandler extends HttpServlet {
 		String email = request.getParameter("email");
 		System.out.print("made it");
 		String password = request.getParameter("password");
-		if (Global.doesUserExists(email, password)){
+		if (Global.doesUserExist(email, password)){
 			response.sendRedirect("ProfilePage.jsp");
 			String uniqUserID = UUID.randomUUID().toString();
 			

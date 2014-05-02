@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class RegistrationHandler
@@ -36,8 +37,10 @@ public class RegistrationHandler extends HttpServlet {
 		//if (request.getParameter("password").equals(request.getParameter("repassword"))){ 
 			String email = request.getParameter("email");
 			String password = request.getParameter("password");
-			Global.addNewUser(email, password);
-			response.sendRedirect("Home.jsp");
+			//Global.addNewUser(email, password);
+			HttpSession session = request.getSession(false);
+			session.setAttribute("error", "look an error happened");
+			response.sendRedirect("Register.jsp");
 		//}
 	}
 

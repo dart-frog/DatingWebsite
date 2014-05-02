@@ -35,7 +35,7 @@ public class Global {
 		}
 	
 	}
-	public static boolean doesUserExists(String email, String password){
+	public static boolean doesUserExist(String email, String password){
 		Connect stream = new Connect();
 		Connection con = stream.getConnection();
 		try{
