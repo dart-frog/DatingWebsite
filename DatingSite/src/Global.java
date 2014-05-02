@@ -56,4 +56,24 @@ public class Global {
 		}
 		return false;
 	}
+	public static boolean isEmailAvalible(String email){
+		Connection con = new Connect().getConnection();
+		try{
+			String SQL = "SELECT email FROM datingsite.RegisteredUsers;";
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(SQL);
+			while (rs.next()){
+				if (rs.getString("email").equals(email)){
+					return false; 
+				}
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return true;
+	}
+	public static int hash(String password){
+		return password.hashCode();
+	}
 }

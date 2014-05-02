@@ -41,6 +41,7 @@ public class LogInHandler extends HttpServlet {
 		if (Global.doesUserExists(email, password)){
 			response.sendRedirect("ProfilePage.jsp");
 			String uniqUserID = UUID.randomUUID().toString();
+			
 		}
 		else{
 			response.sendRedirect("Home.jsp");
