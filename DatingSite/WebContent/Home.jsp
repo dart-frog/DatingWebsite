@@ -1,16 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@page import="datingSite.Global" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Roosevelt Dating Website</title>
-<%if(false){ %>
-<%session.setAttribute("testParameter", "Hello!"); %>
-<%response.sendRedirect("JSPTest.jsp"); %>
-<% } %>
+<% %>
+<%if(Global.isSessionValid(request)){ %>
+<%response.sendRedirect("ProfilePage.jsp"); %>
+<%} %>
 </head>
 <body>
+	<%=Global.getAllUserInfo("1").toString() %>
 	<H1>Welcome to Roosevelts Dating Website</H1>
 	<p>If you are a new user please register</p>
 	<a href= "Register.jsp"> Register</a>
