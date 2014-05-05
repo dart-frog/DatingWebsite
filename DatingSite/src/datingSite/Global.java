@@ -12,6 +12,7 @@ import java.util.UUID;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @WebServlet("/Global")
@@ -62,7 +63,7 @@ public class Global {
 		}
 	}
 	
-	public static SiteError createAndAddNewUser(String email, String password){
+	public static StatusCodes createAndAddNewUser(String email, String password){
 		Connect stream = new Connect();
 		Connection con = stream.getConnection();
 		try{
@@ -73,11 +74,11 @@ public class Global {
 			int count = pstmt.executeUpdate();
 			System.out.println("ROWS AFFECTED:" + count);
 			pstmt.close();
-			return SiteError.NoError;
+			return StatusCodes.Success;
 		}
 		catch(Exception e){
 			e.printStackTrace();
-			return SiteError.UnspecifiedError;
+			return StatusCodes.UnspecifiedError;
 		}
 	
 	}
@@ -113,7 +114,7 @@ public class Global {
 		}
 	}
 	
-	public static Cookie tryLogIn(String email, String password){
+	public static StatusCodes tryLogIn(String email, String password, HttpServletResponse response){
 		Connect stream = new Connect();
 		Connection con = stream.getConnection();
 		try{
@@ -134,11 +135,12 @@ public class Global {
 			if(count == 0) throw new IllegalStateException();
 			pstmt.close();
 			
-			return new Cookie("sessionID", userID);
+			response.addCookie(new Cookie("sessionID", userID));
+			return StatusCodes.Success;
 		}
 		catch(Exception e){
 			e.printStackTrace();
-			return null;
+			return StatusCodes.UnspecifiedError;
 		}
 	}
 	
@@ -181,8 +183,8 @@ public class Global {
 		session.setAttribute("error", error);
 	}
 	
-	public static enum SiteError {
-		NoError,
+	public static enum StatusCodes {
+		Success,
 		UnspecifiedError,
 	}
 }
