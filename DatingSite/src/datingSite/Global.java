@@ -186,5 +186,9 @@ public class Global {
 	public static enum StatusCodes {
 		Success,
 		UnspecifiedError,
+		AccessDenied,
+		UserAlreadyExists,
+		UserNotRecognized,
+		
 	}
 }
