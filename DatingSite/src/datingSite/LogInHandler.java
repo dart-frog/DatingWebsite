@@ -2,10 +2,10 @@ package datingSite;
 
 
 import java.io.IOException;
-import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,7 +41,8 @@ public class LogInHandler extends HttpServlet {
 		System.out.print("made it");
 		String password = Integer.toString(Global.hash(request.getParameter("password")));
 		try {
-			Cookie cookie = Global.tryLogIn(email, password, response);
+			Cookie cookie = Global.tryLogIn(email, password);
+			response.addCookie(cookie);
 			response.sendRedirect("ProfilePage.jsp");
 		} catch(Exception e) {
 			e.printStackTrace();
