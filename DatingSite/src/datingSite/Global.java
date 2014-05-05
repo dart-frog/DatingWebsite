@@ -62,7 +62,7 @@ public class Global {
 		}
 	}
 	
-	public static boolean createAndAddNewUser(String email, String password){
+	public static SiteError createAndAddNewUser(String email, String password){
 		Connect stream = new Connect();
 		Connection con = stream.getConnection();
 		try{
@@ -73,11 +73,11 @@ public class Global {
 			int count = pstmt.executeUpdate();
 			System.out.println("ROWS AFFECTED:" + count);
 			pstmt.close();
-			return true;
+			return SiteError.NoError;
 		}
 		catch(Exception e){
 			e.printStackTrace();
-			return false;
+			return SiteError.UnspecifiedError;
 		}
 	
 	}
@@ -179,5 +179,10 @@ public class Global {
 	
 	public static void setError(HttpSession session, String error) {
 		session.setAttribute("error", error);
+	}
+	
+	public static enum SiteError {
+		NoError,
+		UnspecifiedError,
 	}
 }

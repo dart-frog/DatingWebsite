@@ -39,6 +39,8 @@ public class RegistrationHandler extends HttpServlet {
 			String email = request.getParameter("email");
 			String password = Global.hash(request.getParameter("password"));
 			Global.createAndAddNewUser(email, password);
+			Global.tryLogIn(email, password);
+			response.sendRedirect("ProfilePage.jsp");
 		}
 	}
 }
