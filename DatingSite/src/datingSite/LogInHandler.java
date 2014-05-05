@@ -41,8 +41,7 @@ public class LogInHandler extends HttpServlet {
 		System.out.print("made it");
 		String password = Global.hash(request.getParameter("password"));
 		try {
-			Cookie cookie = Global.tryLogIn(email, password);
-			response.addCookie(cookie);
+			Global.tryLogIn(email, password, response);
 			response.sendRedirect("ProfilePage.jsp");
 		} catch(Exception e) {
 			e.printStackTrace();
