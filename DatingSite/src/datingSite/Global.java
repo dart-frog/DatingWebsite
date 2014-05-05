@@ -172,4 +172,12 @@ public class Global {
 		}
 		return out;
 	}
+	
+	public static void setError(HttpServletRequest request, String error) {
+		setError(request.getSession(false), error);
+	}
+	
+	public static void setError(HttpSession session, String error) {
+		session.setAttribute("error", error);
+	}
 }
