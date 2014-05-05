@@ -12,7 +12,7 @@ import java.util.UUID;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet("/Global")
 public class Global {
@@ -62,7 +62,7 @@ public class Global {
 		}
 	}
 	
-	public static boolean addNewUser(String email, String password){
+	public static boolean createAndAddNewUser(String email, String password){
 		Connect stream = new Connect();
 		Connection con = stream.getConnection();
 		try{
@@ -80,10 +80,6 @@ public class Global {
 			return false;
 		}
 	
-	}
-	
-	public static boolean doLogIn(String username, String password) {
-		return false;
 	}
 	
 	public static String getUserInfo(String infoType, String userID) {
@@ -163,7 +159,17 @@ public class Global {
 		}
 		return true;
 	}
-	public static int hash(String password){
-		return password.hashCode();
+	
+	public static String hash(String password){
+		return Integer.toString(password.hashCode());
+	}
+	
+	public static String getError(HttpSession session) {
+		String out = "";
+		if(session.getAttribute("error") != null) {
+			out = String.format("<span style=\"color:red;\">%s</span>", session.getAttribute("error"));
+			session.setAttribute("error", null);
+		}
+		return out;
 	}
 }

@@ -37,8 +37,8 @@ public class RegistrationHandler extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//if (request.getParameter("password").equals(request.getParameter("repassword"))){ 
 			String email = request.getParameter("email");
-			String password = request.getParameter("password");
-			//Global.addNewUser(email, password);
+			String password = Global.hash(request.getParameter("password"));
+			//Global.createAndAddNewUser(email, password);
 			HttpSession session = request.getSession(false);
 			session.setAttribute("error", "look an error happened");
 			response.sendRedirect("Register.jsp");

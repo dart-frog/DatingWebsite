@@ -39,7 +39,7 @@ public class LogInHandler extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email = request.getParameter("email");
 		System.out.print("made it");
-		String password = Integer.toString(Global.hash(request.getParameter("password")));
+		String password = Global.hash(request.getParameter("password"));
 		try {
 			Cookie cookie = Global.tryLogIn(email, password);
 			response.addCookie(cookie);
