@@ -184,11 +184,13 @@ public class Global {
 	}
 	
 	public static enum StatusCodes {
-		Success,
-		UnspecifiedError,
-		AccessDenied,
-		UserAlreadyExists,
-		UserNotRecognized,
+		Success,				//No error occurred.
+		UnspecifiedError,		//Default in case an unknown error occurs.
+		AccessDenied,			//A user tried to change a value that they shouldn't be able to.
+		UserAlreadyExists,		//A user registration request was sent, but the user name was already taken.
+		UserNotRecognized,		//A user log in request was sent, but the user name didn't exist in the database.
+		PasswordIncorrect,		//A user log in request was sent, and the user name existed, but the password was incorrect.
 		
+		;
 	}
 }
