@@ -188,9 +188,10 @@ public class Global {
 		UnspecifiedError,		//Default in case an unknown error occurs.
 		AccessDenied,			//A user tried to change a value that they shouldn't be able to.
 		UserAlreadyExists,		//A user registration request was sent, but the user name was already taken.
+		UsernameInvalid,		//A user registration request was sent, but the user name specified was invalid for some reason.
+		PasswordInvalid,		//A user registration request was sent, but the password specified was invalid for some reason.
 		UserNotRecognized,		//A user log in request was sent, but the user name didn't exist in the database.
 		PasswordIncorrect,		//A user log in request was sent, and the user name existed, but the password was incorrect.
-		
 		;
 	}
 }
