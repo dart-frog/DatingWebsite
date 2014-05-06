@@ -51,6 +51,7 @@ public class Global {
 		Cookie cookie = getSessionCookie(cookies);
 		if(cookie == null) return -1;
 		String sessionID = cookie.getValue().trim();
+		System.out.println(sessionID);
 		
 		try {
 			String query = "SELECT UserID FROM datingsite.Sessions WHERE SessionID = ?";
@@ -122,20 +123,21 @@ public class Global {
 			ResultSet rs = executeQueryWithParams(query, email, password);
 			rs.next();
 			if(rs.isAfterLast()) return null;
-			String userID = rs.getString(1);
+			int userID = rs.getInt(1);
+			System.out.println(userID);
 			rs.close();
 			
 			String sessionID = UUID.randomUUID().toString();
 			query = "INSERT INTO datingsite.Sessions (UserID, SessionID) VALUES (?,?)"; 
 			PreparedStatement pstmt = con.prepareStatement(query);
-			pstmt.setString(1, userID);
+			pstmt.setInt(1, userID);
 			pstmt.setString(2, sessionID);
 			int count = pstmt.executeUpdate();
 			System.out.println("ROWS AFFECTED:" + count);
 			if(count == 0) throw new IllegalStateException();
 			pstmt.close();
 			
-			response.addCookie(new Cookie("sessionID", userID));
+			response.addCookie(new Cookie("sessionID", sessionID));
 			return StatusCodes.Success;
 		}
 		catch(Exception e){

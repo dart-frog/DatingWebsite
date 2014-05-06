@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import datingSite.Global.StatusCodes;
 
 /**
  * Servlet implementation class RegistrationHandler
@@ -38,9 +39,28 @@ public class RegistrationHandler extends HttpServlet {
 		if (request.getParameter("password").equals(request.getParameter("repassword"))){ 
 			String email = request.getParameter("email");
 			String password = Global.hash(request.getParameter("password"));
-			Global.createAndAddNewUser(email, password);
-			Global.tryLogIn(email, password);
-			response.sendRedirect("ProfilePage.jsp");
+			StatusCodes code = Global.createAndAddNewUser(email, password);
+			String error = null, redirect = "";
+			switch(code) {
+				case Success:
+					Global.tryLogIn(email, password, response);
+					redirect = "ProfilePage.jsp";
+					break;
+				case UserAlreadyExists:
+					error = String.format("The email %s is already registered.", email);
+					redirect = "Register.jsp";
+					break;
+				case PasswordInvalid:
+					error = "The given password was invalid.";
+					redirect = "Register.jsp";
+					break;
+				default:
+					error = "An unknown error occurred.";
+					redirect = "Home.jsp";
+					break;
+			}
+			Global.setError(request, error);
+			response.sendRedirect(redirect);
 		}
 	}
 }

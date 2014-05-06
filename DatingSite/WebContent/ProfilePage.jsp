@@ -5,9 +5,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Roosevelt Dating Website</title>
+<%if(!Global.isSessionValid(request)) { %>
+	<%response.sendRedirect("Home.jsp"); %>
+	<%Global.setError(session, "Invalid Session"); %>
+<%} %>
 </head>
-	<p> this is a profile page wooo<p>
 <body>
-
+	<p> this is a profile page wooo<p>
+	Your session is valid!
+	<!-- Is making GET requests to LogInHandler always a log out command a bad idea?  -->
 </body>
 </html>
