@@ -41,6 +41,10 @@ public class RegistrationHandler extends HttpServlet {
 			error = "Your passwords dont match";
 			redirect = "Home.jsp";
 		}
+		else if (request.getParameter("studentstatus").equals("off")){
+			error = "You must be from Roosevelt to make an account";
+			redirect= "home.jsp";
+		}
 		else{
 			String email = request.getParameter("email");
 			String password = Global.hash(request.getParameter("password"));
