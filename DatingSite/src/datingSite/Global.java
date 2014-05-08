@@ -205,6 +205,8 @@ public class Global {
 		UserAlreadyExists,		//A user registration request was sent, but the user name was already taken.
 		UsernameInvalid,		//A user registration request was sent, but the user name specified was invalid for some reason.
 		PasswordInvalid,		//A user registration request was sent, but the password specified was invalid for some reason.
+		PasswordsDidNotMatch,	//A user registration request was sent, but the when the password was retyped it was different from the previous one.
+		NotFromRossevelt,		//A user registration request was sent, but they did not check the box that they were from roosevelt
 		UserNotRecognized,		//A user log in request was sent, but the user name didn't exist in the database.
 		PasswordIncorrect,		//A user log in request was sent, and the user name existed, but the password was incorrect.
 		SessionInvalid,

@@ -36,11 +36,20 @@ public class RegistrationHandler extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (request.getParameter("password").equals(request.getParameter("repassword"))){ 
+		String error = null, redirect = "";
+		if (! (request.getParameter("password").equals(request.getParameter("repassword")))){ 
+			error = "Your passwords dont match";
+			redirect = "Home.jsp";
+		}
+		else if (!(request.getParameter("studentstatus").equals("on"))){
+			error = "You must be from Roosevelt to make an account";
+			redirect= "home.jsp";
+		}
+		else{
 			String email = request.getParameter("email");
 			String password = Global.hash(request.getParameter("password"));
 			StatusCodes code = Global.createAndAddNewUser(email, password);
-			String error = null, redirect = "";
+			
 			switch(code) {
 				case Success:
 					Global.tryLogIn(email, password, response);
@@ -58,9 +67,9 @@ public class RegistrationHandler extends HttpServlet {
 					error = "An unknown error occurred.";
 					redirect = "Home.jsp";
 					break;
-			}
-			Global.setError(request, error);
-			response.sendRedirect(redirect);
+				}
+				Global.setError(request, error);
+				response.sendRedirect(redirect);
 		}
 	}
 }
