@@ -64,6 +64,19 @@ public class Global {
 		}
 	}
 	
+	public static StatusCodes logOutUser(HttpServletRequest request) {
+		if(!isSessionValid(request)) return StatusCodes.SessionInvalid;
+		String SessionID = getSessionCookie(request.getCookies()).getValue().trim();
+		String query = "REMOVE FROM datingsite.Sessions WHERE SessionID = ?";
+		try{
+			executeQueryWithParams(query, SessionID);
+			return StatusCodes.Success;
+		} catch(Exception e) {
+			e.printStackTrace();
+			return StatusCodes.SQLError;
+		}
+	}
+	
 	public static StatusCodes createAndAddNewUser(String email, String password){
 		Connect stream = new Connect();
 		Connection con = stream.getConnection();
@@ -194,6 +207,8 @@ public class Global {
 		PasswordInvalid,		//A user registration request was sent, but the password specified was invalid for some reason.
 		UserNotRecognized,		//A user log in request was sent, but the user name didn't exist in the database.
 		PasswordIncorrect,		//A user log in request was sent, and the user name existed, but the password was incorrect.
+		SessionInvalid,
+		SQLError,				//An unspecified SQL error occurred.
 		;
 	}
 }
