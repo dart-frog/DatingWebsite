@@ -29,7 +29,7 @@ public class RegistrationHandler extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		response.sendRedirect("Home.jsp");
 	}
 
 	/**
@@ -37,39 +37,44 @@ public class RegistrationHandler extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String error = null, redirect = "";
-		if (! (request.getParameter("password").equals(request.getParameter("repassword")))){ 
-			error = "Your passwords dont match";
-			redirect = "Home.jsp";
+		StatusCodes code = StatusCodes.UnspecifiedError;
+		String email = request.getParameter("email"),
+				password = Global.hash(request.getParameter("password")),
+				repassword = Global.hash(request.getParameter("password"));
+		if (!password.equals(repassword)){
+			code = StatusCodes.PasswordsDidNotMatch;
 		}
 		else if (!(request.getParameter("studentstatus").equals("on"))){
-			error = "You must be from Roosevelt to make an account";
-			redirect= "home.jsp";
+			code = StatusCodes.UnspecifiedError; //TODO
 		}
 		else{
-			String email = request.getParameter("email");
-			String password = Global.hash(request.getParameter("password"));
-			StatusCodes code = Global.createAndAddNewUser(email, password);
-			
-			switch(code) {
-				case Success:
-					Global.tryLogIn(email, password, response);
-					redirect = "ProfilePage.jsp";
-					break;
-				case UserAlreadyExists:
-					error = String.format("The email %s is already registered.", email);
-					redirect = "Register.jsp";
-					break;
-				case PasswordInvalid:
-					error = "The given password was invalid.";
-					redirect = "Register.jsp";
-					break;
-				default:
-					error = "An unknown error occurred.";
-					redirect = "Home.jsp";
-					break;
-				}
-				Global.setError(request, error);
-				response.sendRedirect(redirect);
+			code = Global.createAndAddNewUser(email, password);	
 		}
+		
+		switch(code) {
+			case Success:
+				Global.tryLogIn(email, password, response);
+				redirect = "ProfilePage.jsp";
+				break;
+			case UserAlreadyExists:
+				error = String.format("The email %s is already registered.", email);
+				redirect = "Register.jsp";
+				break;
+			case PasswordInvalid:
+				error = "The given password was invalid.";
+				redirect = "Register.jsp";
+				break;
+			case PasswordsDidNotMatch:
+				error = "The given passwords did not match.";
+				redirect = "Register.jsp";
+			default:
+				error = "An unknown error occurred.";
+				redirect = "Home.jsp";
+				break;
+		}
+		
+		Global.setError(request, error);
+		response.sendRedirect(redirect);
+		
 	}
 }
