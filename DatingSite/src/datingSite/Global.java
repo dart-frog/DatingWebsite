@@ -46,6 +46,23 @@ public class Global {
 		return getUserIDFromRequest(request) != -1;
 	}
 	
+	public static String getNavBar(){
+		return("<ul> \n" +
+				"<li> <a href= 'ProfilePage.jsp'> Account Page</a> </li> \n" +
+				"<li>Message Hub</li> \n" +
+				"<li>Accout Page</li> \n" +
+				"" +
+				"" +
+				"" +
+				"" +
+				"" +
+				"" +
+				"" +
+				"" +
+				"" +
+				"");
+	}
+	
 	public static int getUserIDFromRequest(HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
 		Cookie cookie = getSessionCookie(cookies);
