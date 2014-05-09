@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -46,11 +48,15 @@ public class Global {
 		return getUserIDFromRequest(request) != -1;
 	}
 	
-	public static int getUserIDFromRequest(HttpServletRequest request) {
+	public static String getSessionIDFromRequest(HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
 		Cookie cookie = getSessionCookie(cookies);
-		if(cookie == null) return -1;
-		String sessionID = cookie.getValue().trim();
+		if(cookie == null) return "";
+		return cookie.getValue().trim();
+	}
+	
+	public static int getUserIDFromRequest(HttpServletRequest request) {
+		String sessionID = getSessionIDFromRequest(request);
 		System.out.println(sessionID);
 		
 		try {
@@ -66,7 +72,7 @@ public class Global {
 	
 	public static StatusCodes logOutUser(HttpServletRequest request) {
 		if(!isSessionValid(request)) return StatusCodes.SessionInvalid;
-		String SessionID = getSessionCookie(request.getCookies()).getValue().trim();
+		String SessionID = getSessionIDFromRequest(request);
 		String query = "REMOVE FROM datingsite.Sessions WHERE SessionID = ?";
 		try{
 			executeQueryWithParams(query, SessionID);
@@ -74,6 +80,38 @@ public class Global {
 		} catch(Exception e) {
 			e.printStackTrace();
 			return StatusCodes.SQLError;
+		}
+	}
+	
+	public static StatusCodes logInUser(String email, String password, HttpServletResponse response){
+		Connect stream = new Connect();
+		Connection con = stream.getConnection();
+		try{
+			String query = "SELECT ID FROM datingsite.Users WHERE Email = ? AND Password = ?;";
+			ResultSet rs = executeQueryWithParams(query, email, password);
+			rs.next();
+			if(rs.isAfterLast()) return null;
+			int userID = rs.getInt(1);
+			System.out.println(userID);
+			rs.close();
+			
+			String sessionID = UUID.randomUUID().toString();
+			query = "INSERT INTO datingsite.Sessions (UserID, SessionID, Timestamp) VALUES (?,?,?)"; 
+			PreparedStatement pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, userID);
+			pstmt.setString(2, sessionID);
+			pstmt.setTimestamp(3, new Timestamp(new GregorianCalendar().getTimeInMillis()));
+			int count = pstmt.executeUpdate();
+			System.out.println("ROWS AFFECTED:" + count);
+			if(count == 0) throw new IllegalStateException();
+			pstmt.close();
+			
+			response.addCookie(new Cookie("sessionID", sessionID));
+			return StatusCodes.Success;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return StatusCodes.UnspecifiedError;
 		}
 	}
 	
@@ -125,37 +163,6 @@ public class Global {
 		} catch(Exception e) {
 			e.printStackTrace();
 			return null;
-		}
-	}
-	
-	public static StatusCodes tryLogIn(String email, String password, HttpServletResponse response){
-		Connect stream = new Connect();
-		Connection con = stream.getConnection();
-		try{
-			String query = "SELECT ID FROM datingsite.Users WHERE Email = ? AND Password = ?;";
-			ResultSet rs = executeQueryWithParams(query, email, password);
-			rs.next();
-			if(rs.isAfterLast()) return null;
-			int userID = rs.getInt(1);
-			System.out.println(userID);
-			rs.close();
-			
-			String sessionID = UUID.randomUUID().toString();
-			query = "INSERT INTO datingsite.Sessions (UserID, SessionID) VALUES (?,?)"; 
-			PreparedStatement pstmt = con.prepareStatement(query);
-			pstmt.setInt(1, userID);
-			pstmt.setString(2, sessionID);
-			int count = pstmt.executeUpdate();
-			System.out.println("ROWS AFFECTED:" + count);
-			if(count == 0) throw new IllegalStateException();
-			pstmt.close();
-			
-			response.addCookie(new Cookie("sessionID", sessionID));
-			return StatusCodes.Success;
-		}
-		catch(Exception e){
-			e.printStackTrace();
-			return StatusCodes.UnspecifiedError;
 		}
 	}
 	

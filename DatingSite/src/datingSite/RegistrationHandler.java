@@ -52,7 +52,7 @@ public class RegistrationHandler extends HttpServlet {
 			
 			switch(code) {
 				case Success:
-					Global.tryLogIn(email, password, response);
+					Global.logInUser(email, password, response);
 					redirect = "ProfilePage.jsp";
 					break;
 				case UserAlreadyExists:
