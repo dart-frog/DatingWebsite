@@ -13,6 +13,8 @@
 <body>
 	<p> Welcome to the profile page <p>
 	Your session is valid!
+	
+	
 	<!-- Is making GET requests to LogInHandler always a log out command a bad idea?  -->
 </body>
 </html>

@@ -48,6 +48,23 @@ public class Global {
 		return getUserIDFromRequest(request) != -1;
 	}
 	
+	public static String getNavBar(){
+		return("<ul> \n" +
+				"<li> <a href= 'ProfilePage.jsp'> Account Page</a> </li> \n" +
+				"<li>Message Hub</li> \n" +
+				"<li>Accout Page</li> \n" +
+				"" +
+				"" +
+				"" +
+				"" +
+				"" +
+				"" +
+				"" +
+				"" +
+				"" +
+				"");
+	}
+
 	public static String getSessionIDFromRequest(HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
 		Cookie cookie = getSessionCookie(cookies);
@@ -115,7 +132,7 @@ public class Global {
 		}
 	}
 	
-	public static StatusCodes createAndAddNewUser(String email, String password){
+	public static StatusCodes createAndAddNewUser(String email, String password, HttpServletResponse response){
 		Connect stream = new Connect();
 		Connection con = stream.getConnection();
 		try{
@@ -126,9 +143,15 @@ public class Global {
 			int count = pstmt.executeUpdate();
 			System.out.println("ROWS AFFECTED:" + count);
 			pstmt.close();
+			try {
+				StatusCodes code = logInUser(email, password, response);
+				if(code == StatusCodes.UnspecifiedError) throw new Error("Something is very wrong.");
+			} catch(Exception e) {
+				e.printStackTrace();
+				throw new Error("Something is very, very wrong.");
+			}
 			return StatusCodes.Success;
-		}
-		catch(Exception e){
+		} catch(Exception e){
 			e.printStackTrace();
 			return StatusCodes.UnspecifiedError;
 		}
