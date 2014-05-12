@@ -16,5 +16,6 @@
 	
 	
 	<!-- Is making GET requests to LogInHandler always a log out command a bad idea?  -->
+<%=Global.getNavBar() %>
 </body>
 </html>
