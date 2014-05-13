@@ -51,10 +51,9 @@ public class Global {
 	public static String getNavBar(){
 		return("<ul> \n" +
 				"<li> <a href= 'ProfilePage.jsp'> Account Page </a> </li> \n" +
-				"<li> <a href= 'Home.jsp'> Home                </a> </li> \n" +
-				"<li> <a href= 'MessageHub.jsp'> Message Hub   </a> </li> \n" +
-				"<li> <a href= 'MatchMaker.jsp'> Match Maker   </a> </li> \n" +
-				"<li> <a href= 'Lists.jsp'> Lists              </a> </li> \n" + 
+				"<li> <a href= 'MessageHub.jsp'> Message Hub </a> </li> \n" +
+				"<li> <a href= 'MatchMaker.jsp'> Match Maker </a> </li> \n" +
+				"<li> <a href= 'Lists.jsp'> Lists </a> </li> \n" + 
 				"</ul> \n");
 	}
 

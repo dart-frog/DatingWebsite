@@ -24,5 +24,6 @@
 		Password: <input type="password" name="password" required><br>
 		<input type="submit" value="Submit">
 	</form>
+	<%=Global.getNavBar() %>
 </body>
 </html>
