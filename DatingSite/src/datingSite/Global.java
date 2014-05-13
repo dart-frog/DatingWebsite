@@ -5,8 +5,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -105,11 +103,10 @@ public class Global {
 			rs.close();
 			
 			String sessionID = UUID.randomUUID().toString();
-			query = "INSERT INTO datingsite.Sessions (UserID, SessionID, Timestamp) VALUES (?,?,?)"; 
+			query = "INSERT INTO datingsite.Sessions (UserID, SessionID) VALUES (?,?)"; 
 			PreparedStatement pstmt = con.prepareStatement(query);
 			pstmt.setInt(1, userID);
 			pstmt.setString(2, sessionID);
-			pstmt.setTimestamp(3, new Timestamp(new GregorianCalendar().getTimeInMillis()));
 			int count = pstmt.executeUpdate();
 			System.out.println("ROWS AFFECTED:" + count);
 			if(count == 0) throw new IllegalStateException();
