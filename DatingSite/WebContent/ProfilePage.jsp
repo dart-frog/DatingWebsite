@@ -5,6 +5,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Roosevelt Dating Website</title>
+<form action = "LogOutHandler" method = "post">
+	<button type = "submit"> Log out</button>
+</form>
 <%if(!Global.isSessionValid(request)) { %>
 	<%response.sendRedirect("Home.jsp"); %>
 	<%Global.setError(session, "Invalid Session"); %>
