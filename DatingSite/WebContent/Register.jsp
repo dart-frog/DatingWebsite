@@ -17,7 +17,6 @@
 				Retype Password: <input type="password" name="repassword" required><br>
 				I am a Roosevelt Student: <input type="checkbox"name="studentstatus"><br> 
 				<input type="submit" value="Submit">
-				
 			</span>
 		</form>
 	</div>

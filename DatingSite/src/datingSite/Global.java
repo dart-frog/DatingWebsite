@@ -21,6 +21,8 @@ public class Global {
 	public static final String sessionsTable = schema + "." + "Sessions";
 	public static final String usersTable = schema + "." + "Users";
 	public static final String userDataTable = schema + "." + "UserData";
+	public static final String[] personalInfoVarNames = {"FirstName", "LastName", "Class", "Gender", "Birthday"};
+	public static final String[] personalInfoLabels =  {"First Name", "Last Name", "Class", "Gender", "Birthday"};
 	
 	private static Cookie getSessionCookie(Cookie[] cookies) {
 		if(cookies == null) return null;
