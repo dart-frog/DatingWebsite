@@ -246,15 +246,26 @@ public class Global {
 	}
 	
 	public static enum PersonalInfo {
+		//TODO: PersonalInfoHandler?
 		FirstName(true, "FirstName", "First Name", "text"),
-		Birthday(true, "Birthday", "Birthday", "date"),
+		LastName(true, "LastName", "Last Name", "text"),
+		Class(true, "Class", "Class", "number\" min=\"2014\" max=\"2019"), //TODO: This is hackish; let's make it better later.
+		Birthday(true, "Birthday", "Birthday", "date"), //I have no idea whether or not this works! </medic>
+		Gender(true, "Gender", "Gender", ""),
 		;
 		
 		private final boolean required;
 		private final String varName;
 		private final String displayName;
 		private final String HTMLInputType;
-		
+
+		private PersonalInfo(boolean req, String sql, String disp, String html) {
+			required = req;
+			varName = sql;
+			displayName = disp;
+			HTMLInputType = html;
+		}
+
 		public boolean isRequired() {
 			return required;
 		}
@@ -263,15 +274,14 @@ public class Global {
 			return getUserInfo(this, userID);
 		}
 		
-		public String getHTMLInputTag(String userID) {
-			return String.format("%s: <input type=\"%s\" name=\"%s\" value=\"%s\" %s><br>", displayName, HTMLInputType, varName, getInfoForUser(userID), (required ? "required" : ""));
-		}
-		
-		private PersonalInfo(boolean req, String sql, String disp, String html) {
-			required = req;
-			varName = sql;
-			displayName = disp;
-			HTMLInputType = html;
+		public String getHTMLInputTag(String userID) { //TODO: Create special cases for certain personal info types
+			switch(this) {
+			case Gender:
+				return String.format("%s: <select name=\"%s\" required>\n<option value=\"Male\">Male</option>\n<option value=\"Female\">Female</option></select><br>", displayName, varName);
+			case Birthday: //TODO
+			default:
+				return String.format("%s: <input type=\"%s\" name=\"%s\" value=\"%s\" %s><br>", displayName, HTMLInputType, varName, getInfoForUser(userID), (required ? "required" : ""));
+			}
 		}
 	}
 }

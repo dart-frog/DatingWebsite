@@ -17,10 +17,11 @@ if(!Global.isSessionValid(request)) {
 } %>
 </head>
 <body>
-	<p> Welcome to the profile page <p>
-	Your session is valid!
-	Your user ID is <%=userID %>
-	Your email address is <%=Global.getEmailFromUserID(userID) %>
+	<p> Welcome to the profile page! <p>
+	Your session is valid.<br>
+	Your user ID is <%=userID %>.<br>
+	Your email address is <%=Global.getEmailFromUserID(userID) %>.<br>
+	
 
 	<div id=personalInfoDiv>
 		<h3>Personal Information</h3>
