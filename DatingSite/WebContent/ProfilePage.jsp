@@ -19,15 +19,18 @@ if(!Global.isSessionValid(request)) {
 <body>
 	<p> Welcome to the profile page <p>
 	Your session is valid!
-	Today's date is <%=new Date() %>.
 	Your user ID is <%=userID %>
 	Your email address is <%=Global.getEmailFromUserID(userID) %>
-	
-	<form id=personalInfo>
-		<%for(Global.PersonalInfo pi : Global.PersonalInfo.values()) { %>
-			<%=pi.getInfoForUser(userID) %>
-		<%} %>
-	</form>
+
+	<div id=personalInfoDiv>
+		<h3>Personal Information</h3>
+		<form id=personalInfoForm>
+			<%for(Global.PersonalInfo pi : Global.PersonalInfo.values()) { %>
+				<%=pi.getHTMLInputTag(userID) %>
+			<%} %>
+			<input type="submit" value="Submit">
+		</form>
+	</div>
 	
 	<!-- Is making GET requests to LogInHandler always a log out command a bad idea?  -->
 	<!-- Yeah, probably. -->

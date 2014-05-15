@@ -162,7 +162,7 @@ public class Global {
 	public static String getUserInfo(PersonalInfo infoType, String userID) {
 		try {
 			String query = "SELECT ? FROM datingsite.UserData WHERE UserID = ?;";
-			ResultSet rs = executeQueryWithParams(query, infoType.SQLVarName, userID);
+			ResultSet rs = executeQueryWithParams(query, infoType.varName, userID);
 			rs.next();
 			return rs.getString(1);
 		} catch(Exception e) {
@@ -180,7 +180,7 @@ public class Global {
 			int columns = md.getColumnCount();
 			Map<PersonalInfo, String> info = new HashMap<PersonalInfo, String>();
 			for(PersonalInfo pi : PersonalInfo.values()) {
-				String columnName = pi.SQLVarName;
+				String columnName = pi.varName;
 				info.put(pi, rs.getString(columnName));
 			}
 			return info;
@@ -251,7 +251,7 @@ public class Global {
 		;
 		
 		private final boolean required;
-		private final String SQLVarName;
+		private final String varName;
 		private final String displayName;
 		private final String HTMLInputType;
 		
@@ -264,12 +264,12 @@ public class Global {
 		}
 		
 		public String getHTMLInputTag(String userID) {
-			return String.format("%s: <input type=\"%s\" name=\"%s\" value=\"%s\" %s><br>", displayName, HTMLInputType, getInfoForUser(userID), (required ? "required" : ""));
+			return String.format("%s: <input type=\"%s\" name=\"%s\" value=\"%s\" %s><br>", displayName, HTMLInputType, varName, getInfoForUser(userID), (required ? "required" : ""));
 		}
 		
 		private PersonalInfo(boolean req, String sql, String disp, String html) {
 			required = req;
-			SQLVarName = sql;
+			varName = sql;
 			displayName = disp;
 			HTMLInputType = html;
 		}
