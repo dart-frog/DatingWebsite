@@ -250,8 +250,8 @@ public class Global {
 		FirstName(true, "FirstName", "First Name", "text"),
 		LastName(true, "LastName", "Last Name", "text"),
 		Class(true, "Class", "Class", "number\" min=\"2014\" max=\"2019"), //TODO: This is hackish; let's make it better later.
-		Birthday(true, "Birthday", "Birthday", "date"), //I have no idea whether or not this works! </medic>
-		Gender(true, "Gender", "Gender", ""),
+		Birthday(true, "Birthday", "Birthday", "date"), //TODO: make a special case 
+		Gender("Gender", "Gender"),
 		;
 		
 		private final boolean required;
@@ -266,6 +266,13 @@ public class Global {
 			HTMLInputType = html;
 		}
 
+		private PersonalInfo(String sql, String disp) {
+			required = true;
+			varName = sql;
+			displayName = disp;
+			HTMLInputType = "ERROR";
+		}
+
 		public boolean isRequired() {
 			return required;
 		}
@@ -276,11 +283,11 @@ public class Global {
 		
 		public String getHTMLInputTag(String userID) { //TODO: Create special cases for certain personal info types
 			switch(this) {
-			case Gender:
-				return String.format("%s: <select name=\"%s\" required>\n<option value=\"Male\">Male</option>\n<option value=\"Female\">Female</option></select><br>", displayName, varName);
-			case Birthday: //TODO
-			default:
-				return String.format("%s: <input type=\"%s\" name=\"%s\" value=\"%s\" %s><br>", displayName, HTMLInputType, varName, getInfoForUser(userID), (required ? "required" : ""));
+				case Gender:
+					return String.format("%s: <select name=\"%s\" required>\n<option value=\"Male\">Male</option>\n<option value=\"Female\">Female</option></select><br>", displayName, varName);
+				case Birthday: //TODO
+				default:
+					return String.format("%s: <input type=\"%s\" name=\"%s\" value=\"%s\" %s><br>", displayName, HTMLInputType, varName, getInfoForUser(userID), (required ? "required" : ""));
 			}
 		}
 	}
