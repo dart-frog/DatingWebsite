@@ -21,8 +21,6 @@ public class Global {
 	public static final String sessionsTable = schema + "." + "Sessions";
 	public static final String usersTable = schema + "." + "Users";
 	public static final String userDataTable = schema + "." + "UserData";
-	public static final String[] personalInfoVarNames = {"FirstName", "LastName", "Class", "Gender", "Birthday"};
-	public static final String[] personalInfoLabels =  {"First Name", "Last Name", "Class", "Gender", "Birthday"};
 	
 	private static Cookie getSessionCookie(Cookie[] cookies) {
 		if(cookies == null) return null;
@@ -45,7 +43,7 @@ public class Global {
 	}
 	
 	public static boolean isSessionValid(HttpServletRequest request) {
-		return getUserIDFromRequest(request) != -1;
+		return !getUserIDFromRequest(request).equals("-1");
 	}
 	
 	public static String getNavBar(){
@@ -64,7 +62,7 @@ public class Global {
 		return cookie.getValue().trim();
 	}
 	
-	public static int getUserIDFromRequest(HttpServletRequest request) {
+	public static String getUserIDFromRequest(HttpServletRequest request) {
 		String sessionID = getSessionIDFromRequest(request);
 		System.out.println(sessionID);
 		
@@ -72,10 +70,22 @@ public class Global {
 			String query = "SELECT UserID FROM datingsite.Sessions WHERE SessionID = ?";
 			ResultSet rs = executeQueryWithParams(query, sessionID);
 			rs.next();
-			return rs.getInt(1);
+			return rs.getString(1);
 		} catch(Exception e) {
 			e.printStackTrace();
-			return -1;
+			return "-1";
+		}
+	}
+	
+	public static String getEmailFromUserID(String userID) {
+		try {
+			String query = "SELECT Email FROM datingsite.Users WHERE ID = ?";
+			ResultSet rs = executeQueryWithParams(query, userID);
+			rs.next();
+			return rs.getString(1);
+		} catch(Exception e) {
+			e.printStackTrace();
+			return "INVALID EMAIL";
 		}
 	}
 	
@@ -149,10 +159,10 @@ public class Global {
 	
 	}
 	
-	public static String getUserInfo(String infoType, String userID) {
+	public static String getUserInfo(PersonalInfo infoType, String userID) {
 		try {
 			String query = "SELECT ? FROM datingsite.UserData WHERE UserID = ?;";
-			ResultSet rs = executeQueryWithParams(query, infoType, userID);
+			ResultSet rs = executeQueryWithParams(query, infoType.SQLVarName, userID);
 			rs.next();
 			return rs.getString(1);
 		} catch(Exception e) {
@@ -161,17 +171,17 @@ public class Global {
 		}
 	}
 	
-	public static Map<String, String> getAllUserInfo(String userID) {
+	public static Map<PersonalInfo, String> getAllUserInfo(String userID) {
 		try {
 			String query = "SELECT * FROM datingsite.UserData WHERE UserID = ?;";
 			ResultSet rs = executeQueryWithParams(query, userID);
 			rs.next();
 			ResultSetMetaData md = rs.getMetaData();
 			int columns = md.getColumnCount();
-			Map<String, String> info = new HashMap<String, String>();
-			for(int i = 1; i <= columns; i++) {
-				String columnName = md.getColumnName(i);
-				info.put(columnName, rs.getString(columnName));
+			Map<PersonalInfo, String> info = new HashMap<PersonalInfo, String>();
+			for(PersonalInfo pi : PersonalInfo.values()) {
+				String columnName = pi.SQLVarName;
+				info.put(pi, rs.getString(columnName));
 			}
 			return info;
 		} catch(Exception e) {
@@ -233,5 +243,35 @@ public class Global {
 		SessionInvalid,
 		SQLError,				//An unspecified SQL error occurred.
 		;
+	}
+	
+	public static enum PersonalInfo {
+		FirstName(true, "FirstName", "First Name", "text"),
+		Birthday(true, "Birthday", "Birthday", "date"),
+		;
+		
+		private final boolean required;
+		private final String SQLVarName;
+		private final String displayName;
+		private final String HTMLInputType;
+		
+		public boolean isRequired() {
+			return required;
+		}
+		
+		public String getInfoForUser(String userID) {
+			return getUserInfo(this, userID);
+		}
+		
+		public String getHTMLInputTag(String userID) {
+			return String.format("%s: <input type=\"%s\" name=\"%s\" value=\"%s\" %s><br>", displayName, HTMLInputType, getInfoForUser(userID), (required ? "required" : ""));
+		}
+		
+		private PersonalInfo(boolean req, String sql, String disp, String html) {
+			required = req;
+			SQLVarName = sql;
+			displayName = disp;
+			HTMLInputType = html;
+		}
 	}
 }

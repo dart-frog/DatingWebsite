@@ -8,21 +8,24 @@
 <form action = "LogOutHandler" method = "post">
 	<button type = "submit"> Log out</button>
 </form>
-<%if(!Global.isSessionValid(request)) { %>
-	<%response.sendRedirect("Home.jsp"); %>
-	<%Global.setError(session, "Invalid Session"); %>
-<%} %>
+<%String userID = "INVALID USER";
+if(!Global.isSessionValid(request)) {
+	response.sendRedirect("Home.jsp");
+	Global.setError(session, "Invalid Session");
+} else {
+	userID = Global.getUserIDFromRequest(request);
+} %>
 </head>
 <body>
 	<p> Welcome to the profile page <p>
 	Your session is valid!
 	Today's date is <%=new Date() %>.
+	Your user ID is <%=userID %>
+	Your email address is <%=Global.getEmailFromUserID(userID) %>
 	
 	<form id=personalInfo>
-		<%
-		%>
-		<%for(int i = 0; i < Global.personalInfoLabels.length; i++) {%>
-			<%=String.format("%s: <input type=\"%s\" name=\"%s\" value=\"%s\" required><br>", Global.personalInfoLabels[i], "text", Global.personalInfoVarNames[i], ) %>
+		<%for(Global.PersonalInfo pi : Global.PersonalInfo.values()) { %>
+			<%=pi.getInfoForUser(userID) %>
 		<%} %>
 	</form>
 	
