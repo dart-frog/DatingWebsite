@@ -42,6 +42,16 @@ public class Global {
 		return rs;
 	}
 	
+	private static int executeQueryWithParamsWithoutResults(String query, String...params) throws SQLException {
+		Connection con = new Connect().getConnection();
+		PreparedStatement pstmt = con.prepareStatement(query);
+		for(int i = 0; i < params.length; i++) {
+			pstmt.setString(i+1, params[i]);
+		}
+		int count = pstmt.executeUpdate();
+		return count;
+	}
+	
 	public static boolean isSessionValid(HttpServletRequest request) {
 		return !getUserIDFromRequest(request).equals("-1");
 	}
@@ -92,9 +102,9 @@ public class Global {
 	public static StatusCodes logOutUser(HttpServletRequest request) {
 		if(!isSessionValid(request)) return StatusCodes.SessionInvalid;
 		String SessionID = getSessionIDFromRequest(request);
-		String query = "REMOVE FROM datingsite.Sessions WHERE SessionID = ?";
+		String query = "DELETE FROM datingsite.Sessions WHERE SessionID = ?";
 		try{
-			executeQueryWithParams(query, SessionID);
+			executeQueryWithParamsWithoutResults(query, SessionID);
 			return StatusCodes.Success;
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -123,7 +133,7 @@ public class Global {
 			}
 			try{
 				String sessionID = UUID.randomUUID().toString();
-				query = "INSERT INTO datingsite.Sessions (UserID, SessionID) VALUES (?,?)"; 
+				query = "INSERT INTO datingsite.Sessions (UserID, SessionID) VALUES (?,?)";
 				PreparedStatement pstmt = con.prepareStatement(query);
 				pstmt.setInt(1, userID);
 				pstmt.setString(2, sessionID);
