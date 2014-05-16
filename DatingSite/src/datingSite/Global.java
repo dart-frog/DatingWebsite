@@ -285,7 +285,7 @@ public class Global {
 			switch(this) {
 				case Gender:
 					return String.format("%s: <select name=\"%s\" required>\n<option value=\"Male\">Male</option>\n<option value=\"Female\">Female</option></select><br>", displayName, varName);
-				case Birthday: //TODO
+				case Birthday: //TODO; not sure how it's retrieved from the DB. We'll get to that bit later.
 				default:
 					return String.format("%s: <input type=\"%s\" name=\"%s\" value=\"%s\" %s><br>", displayName, HTMLInputType, varName, getInfoForUser(userID), (required ? "required" : ""));
 			}
