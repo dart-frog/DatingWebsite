@@ -106,26 +106,39 @@ public class Global {
 		Connect stream = new Connect();
 		Connection con = stream.getConnection();
 		try{
-			String query = "SELECT ID FROM datingsite.Users WHERE Email = ? AND Password = ?;";
-			ResultSet rs = executeQueryWithParams(query, email, password);
-			rs.next();
-			if(rs.isAfterLast()) return null;
-			int userID = rs.getInt(1);
-			System.out.println(userID);
-			rs.close();
-			
-			String sessionID = UUID.randomUUID().toString();
-			query = "INSERT INTO datingsite.Sessions (UserID, SessionID) VALUES (?,?)"; 
-			PreparedStatement pstmt = con.prepareStatement(query);
-			pstmt.setInt(1, userID);
-			pstmt.setString(2, sessionID);
-			int count = pstmt.executeUpdate();
-			System.out.println("ROWS AFFECTED:" + count);
-			if(count == 0) throw new IllegalStateException();
-			pstmt.close();
-			
-			response.addCookie(new Cookie("sessionID", sessionID));
-			return StatusCodes.Success;
+			String query;
+			int userID;
+			try{
+				query = "SELECT ID FROM datingsite.Users WHERE Email = ? AND Password = ?;";
+				ResultSet rs = executeQueryWithParams(query, email, password);
+				rs.next();
+				if(rs.isAfterLast()) return null;
+				userID = rs.getInt(1);
+				System.out.println(userID);
+				rs.close();
+			}
+			catch(Exception e){
+				e.printStackTrace();
+				return StatusCodes.PasswordIncorrect;
+			}
+			try{
+				String sessionID = UUID.randomUUID().toString();
+				query = "INSERT INTO datingsite.Sessions (UserID, SessionID) VALUES (?,?)"; 
+				PreparedStatement pstmt = con.prepareStatement(query);
+				pstmt.setInt(1, userID);
+				pstmt.setString(2, sessionID);
+				int count = pstmt.executeUpdate();
+				System.out.println("ROWS AFFECTED:" + count);
+				if(count == 0) throw new IllegalStateException();
+				pstmt.close();
+				
+				response.addCookie(new Cookie("sessionID", sessionID));
+				return StatusCodes.Success;
+			}
+			catch(Exception e){
+				e.printStackTrace();
+				return StatusCodes.SQLError;
+			}
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -146,7 +159,7 @@ public class Global {
 			pstmt.close();
 			try {
 				StatusCodes code = logInUser(email, password, response);
-				if(code == StatusCodes.UnspecifiedError) throw new Error("Something is very wrong.");
+				if(code != StatusCodes.Success) throw new Error("Something is very wrong.");
 			} catch(Exception e) {
 				e.printStackTrace();
 				throw new Error("Something is very, very wrong.");
