@@ -194,25 +194,7 @@ public class Global {
 		}
 	}
 	
-	public static Map<PersonalInfo, String> getAllUserInfo(String userID) {
-		try {
-			String query = "SELECT * FROM datingsite.UserData WHERE UserID = ?;";
-			ResultSet rs = executeQueryWithParams(query, userID);
-			rs.next();
-			ResultSetMetaData md = rs.getMetaData();
-			int columns = md.getColumnCount();
-			Map<PersonalInfo, String> info = new HashMap<PersonalInfo, String>();
-			for(PersonalInfo pi : PersonalInfo.values()) {
-				String columnName = pi.varName;
-				info.put(pi, rs.getString(columnName));
-			}
-			return info;
-		} catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
+
 	public static boolean isEmailAvalible(String email){
 		Connection con = new Connect().getConnection();
 		try{
@@ -313,5 +295,45 @@ public class Global {
 					return String.format("%s: <input type=\"%s\" name=\"%s\" value=\"%s\" %s><br>", displayName, HTMLInputType, varName, getInfoForUser(userID), (required ? "required" : ""));
 			}
 		}
+	}
+	/*
+	0 not compatible
+	50 average
+	100 super compatible
+	*/
+	public int getCompatiblity(User x,User y){
+		return 0;
+	}
+
+	public class User{
+		Map<PersonalInfo, String> info = null;
+		private String userID;
+		public User(int x){
+			userID = Integer.toString(x);
+			info = getAllUserInfo();
+		}
+		public Map<PersonalInfo, String> getAllUserInfo() {
+			if(info != null) {
+				return info;
+			} else {
+				try {
+					String query = "SELECT * FROM datingsite.UserData WHERE UserID = ?;";
+					ResultSet rs = executeQueryWithParams(query, userID);
+					rs.next();
+					ResultSetMetaData md = rs.getMetaData();
+					int columns = md.getColumnCount();
+					Map<PersonalInfo, String> info = new HashMap<PersonalInfo, String>();
+					for(PersonalInfo pi : PersonalInfo.values()) {
+						String columnName = pi.varName;
+						info.put(pi, rs.getString(columnName));
+					}
+					return info;
+				} catch(Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+			}
+		}
+		
 	}
 }
