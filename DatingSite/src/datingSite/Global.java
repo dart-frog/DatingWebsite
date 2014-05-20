@@ -301,9 +301,13 @@ public class Global {
 	50 average
 	100 super compatible
 	*/
-	public int getCompatiblity(User x,User y){
+	public double getCompatiblity(User x,User y){
 		return 0;
 	}
+	public ArrayList<double> getCompatibilityList(){
+		
+	}
+	
 
 	public class User{
 		Map<PersonalInfo, String> info = null;
