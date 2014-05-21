@@ -313,10 +313,6 @@ public class Global {
 	public double getCompatiblity(User x,User y){
 		return 0;
 	}
-	public ArrayList<double> getCompatibilityList(){
-		
-	}
-	
 
 	public class User{
 		Map<PersonalInfo, String> info = null;
