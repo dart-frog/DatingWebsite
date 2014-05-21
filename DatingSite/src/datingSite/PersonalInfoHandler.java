@@ -41,8 +41,9 @@ public class PersonalInfoHandler extends HttpServlet {
 		User user = Global.getUserFromRequest(request);
 		Map<PersonalInfo, String> info = user.getAllUserInfo();
 		for(PersonalInfo pi : PersonalInfo.values()) {
-			info.put(pi, request.getParameter(pi.))
+			info.put(pi, request.getParameter(pi.getVarName()));
 		}
+		user.
 	}
 
 }

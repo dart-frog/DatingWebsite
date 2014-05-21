@@ -264,6 +264,10 @@ public class Global {
 			displayName = disp;
 			HTMLInputType = "ERROR";
 		}
+		
+		public String getVarName() {
+			return varName;
+		}
 
 		public boolean isRequired() {
 			return required;
@@ -272,7 +276,7 @@ public class Global {
 		public String getInfoForUser(User user) {
 			try {
 				String query = "SELECT ? FROM datingsite.UserData WHERE UserID = ?;";
-				ResultSet rs = executeQueryWithParams(query, this.varName, user.userID);
+				ResultSet rs = executeQueryWithParams(query, this.getVarName(), user.userID);
 				rs.next();
 				return rs.getString(1);
 			} catch(Exception e) {
@@ -284,20 +288,20 @@ public class Global {
 		public String getHTMLInputTag(User user) { //TODO: Create special cases for certain personal info types
 			switch(this) {
 				case Gender:
-					return String.format("%s: <select name=\"%s\" required>\n<option value=\"Male\">Male</option>\n<option value=\"Female\">Female</option></select><br>", displayName, varName);
+					return String.format("%s: <select name=\"%s\" required>\n<option value=\"Male\">Male</option>\n<option value=\"Female\">Female</option></select><br>", displayName, getVarName());
 				case Birthday: //TODO; not sure how it's retrieved from the DB. We'll get to that bit later.
 				default:
-					return String.format("%s: <input type=\"%s\" name=\"%s\" value=\"%s\" %s><br>", displayName, HTMLInputType, varName, getInfoForUser(user), (required ? "required" : ""));
+					return String.format("%s: <input type=\"%s\" name=\"%s\" value=\"%s\" %s><br>", displayName, HTMLInputType, getVarName(), getInfoForUser(user), (required ? "required" : ""));
 			}
 		}
 		
 		public String getBlankHTMLInputTag() { //TODO: Create special cases for certain personal info types
 			switch(this) {
 				case Gender:
-					return String.format("%s: <select name=\"%s\" required>\n<option value=\"Male\">Male</option>\n<option value=\"Female\">Female</option></select><br>", displayName, varName);
+					return String.format("%s: <select name=\"%s\" required>\n<option value=\"Male\">Male</option>\n<option value=\"Female\">Female</option></select><br>", displayName, getVarName());
 				case Birthday: //TODO; not sure how it's retrieved from the DB. We'll get to that bit later.
 				default:
-					return String.format("%s: <input type=\"%s\" name=\"%s\" %s><br>", displayName, HTMLInputType, varName, (required ? "required" : ""));
+					return String.format("%s: <input type=\"%s\" name=\"%s\" %s><br>", displayName, HTMLInputType, getVarName(), (required ? "required" : ""));
 			}
 		}
 	}
@@ -321,6 +325,24 @@ public class Global {
 			userID = ID;
 			info = getAllUserInfo();
 		}
+		
+		public String getUserID() {
+			return userID;
+		}
+		
+		public StatusCodes updatePersonalInfo(Map<PersonalInfo, String> infoMap) {
+			String queryTemplate = "UPDATE datingsite.UserData SET ? = ? WHERE UserID = ?";
+			try {
+				for(PersonalInfo pi : infoMap.keySet()) {
+					Global.executeQueryWithParamsWithoutResults(queryTemplate, pi.getVarName(), infoMap.get(pi), userID);
+				}
+				return StatusCodes.Success;
+			} catch(Exception e) {
+				e.printStackTrace();
+				return StatusCodes.SQLError;
+			}
+		}
+		
 		public Map<PersonalInfo, String> getAllUserInfo() {
 			if(info != null) {
 				return info;
@@ -333,7 +355,7 @@ public class Global {
 					int columns = md.getColumnCount();
 					Map<PersonalInfo, String> info = new HashMap<PersonalInfo, String>();
 					for(PersonalInfo pi : PersonalInfo.values()) {
-						String columnName = pi.varName;
+						String columnName = pi.getVarName();
 						info.put(pi, rs.getString(columnName));
 					}
 					return info;

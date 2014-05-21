@@ -8,12 +8,13 @@
 <form action = "LogOutHandler" method = "post">
 	<button type = "submit"> Log out</button>
 </form>
+<%Global.User user = Global.getUserFromRequest(request); %>
 <%String userID = "INVALID USER";
-if(!Global.isSessionValid(request)) {
+if(user == null) {
 	response.sendRedirect("Home.jsp");
 	Global.setError(session, "Invalid Session");
 } else {
-	userID = Global.getUserIDFromRequest(request);
+	userID = user.getUserID();
 } %>
 </head>
 <body>
@@ -27,7 +28,7 @@ if(!Global.isSessionValid(request)) {
 		<h3>Personal Information</h3>
 		<form id=personalInfoForm>
 			<%for(Global.PersonalInfo pi : Global.PersonalInfo.values()) { %>
-				<%=pi.getHTMLInputTag(userID) %>
+				<%=pi.getHTMLInputTag(user) %>
 			<%} %>
 			<input type="submit" value="Submit">
 		</form>
