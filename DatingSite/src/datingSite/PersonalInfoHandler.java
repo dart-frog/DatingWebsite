@@ -39,11 +39,11 @@ public class PersonalInfoHandler extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User user = Global.getUserFromRequest(request);
-		Map<PersonalInfo, String> info = user.getAllUserInfo();
+		Map<PersonalInfo, String> infoMap = user.getAllUserInfo();
 		for(PersonalInfo pi : PersonalInfo.values()) {
-			info.put(pi, request.getParameter(pi.getVarName()));
+			infoMap.put(pi, request.getParameter(pi.getVarName()));
 		}
-		user.
+		user.updatePersonalInfo(infoMap);
 	}
 
 }
