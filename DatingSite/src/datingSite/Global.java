@@ -281,13 +281,23 @@ public class Global {
 			}
 		}
 		
-		public String getHTMLInputTag(String userID) { //TODO: Create special cases for certain personal info types
+		public String getHTMLInputTag(User user) { //TODO: Create special cases for certain personal info types
 			switch(this) {
 				case Gender:
 					return String.format("%s: <select name=\"%s\" required>\n<option value=\"Male\">Male</option>\n<option value=\"Female\">Female</option></select><br>", displayName, varName);
 				case Birthday: //TODO; not sure how it's retrieved from the DB. We'll get to that bit later.
 				default:
-					return String.format("%s: <input type=\"%s\" name=\"%s\" value=\"%s\" %s><br>", displayName, HTMLInputType, varName, getInfoForUser(new User(userID)), (required ? "required" : ""));
+					return String.format("%s: <input type=\"%s\" name=\"%s\" value=\"%s\" %s><br>", displayName, HTMLInputType, varName, getInfoForUser(user), (required ? "required" : ""));
+			}
+		}
+		
+		public String getBlankHTMLInputTag() { //TODO: Create special cases for certain personal info types
+			switch(this) {
+				case Gender:
+					return String.format("%s: <select name=\"%s\" required>\n<option value=\"Male\">Male</option>\n<option value=\"Female\">Female</option></select><br>", displayName, varName);
+				case Birthday: //TODO; not sure how it's retrieved from the DB. We'll get to that bit later.
+				default:
+					return String.format("%s: <input type=\"%s\" name=\"%s\" %s><br>", displayName, HTMLInputType, varName, (required ? "required" : ""));
 			}
 		}
 	}
