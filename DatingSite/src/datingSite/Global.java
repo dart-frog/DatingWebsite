@@ -82,7 +82,10 @@ public class Global {
 			rs.next();
 			return new User(rs.getString(1));
 		} catch(Exception e) {
-			e.printStackTrace();
+			if(!e.getLocalizedMessage().trim().equals("The result set has no current row.")) {
+				e.printStackTrace();
+			}
+			
 			return null;
 		}
 	}
@@ -314,7 +317,7 @@ public class Global {
 		return 0;
 	}
 
-	public class User{
+	public static class User{
 		Map<PersonalInfo, String> info = null;
 		private String userID;
 		public User(String ID){
