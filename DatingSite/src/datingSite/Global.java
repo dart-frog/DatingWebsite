@@ -53,7 +53,7 @@ public class Global {
 	}
 	
 	public static boolean isSessionValid(HttpServletRequest request) {
-		return !getUserIDFromRequest(request).equals("-1");
+		return getUserFromRequest(request) != null;
 	}
 	
 	public static String getNavBar(){
@@ -72,7 +72,7 @@ public class Global {
 		return cookie.getValue().trim();
 	}
 	
-	public static String getUserIDFromRequest(HttpServletRequest request) {
+	public static User getUserFromRequest(HttpServletRequest request) {
 		String sessionID = getSessionIDFromRequest(request);
 		System.out.println(sessionID);
 		
@@ -80,10 +80,10 @@ public class Global {
 			String query = "SELECT UserID FROM datingsite.Sessions WHERE SessionID = ?";
 			ResultSet rs = executeQueryWithParams(query, sessionID);
 			rs.next();
-			return rs.getString(1);
+			return new User(rs.getString(1));
 		} catch(Exception e) {
 			e.printStackTrace();
-			return "-1";
+			return null;
 		}
 	}
 	
@@ -181,19 +181,6 @@ public class Global {
 		}
 	
 	}
-	
-	public static String getUserInfo(PersonalInfo infoType, String userID) {
-		try {
-			String query = "SELECT ? FROM datingsite.UserData WHERE UserID = ?;";
-			ResultSet rs = executeQueryWithParams(query, infoType.varName, userID);
-			rs.next();
-			return rs.getString(1);
-		} catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
 
 	public static boolean isEmailAvalible(String email){
 		Connection con = new Connect().getConnection();
@@ -282,8 +269,16 @@ public class Global {
 			return required;
 		}
 		
-		public String getInfoForUser(String userID) {
-			return getUserInfo(this, userID);
+		public String getInfoForUser(User user) {
+			try {
+				String query = "SELECT ? FROM datingsite.UserData WHERE UserID = ?;";
+				ResultSet rs = executeQueryWithParams(query, this.varName, user.userID);
+				rs.next();
+				return rs.getString(1);
+			} catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
 		}
 		
 		public String getHTMLInputTag(String userID) { //TODO: Create special cases for certain personal info types
@@ -292,7 +287,7 @@ public class Global {
 					return String.format("%s: <select name=\"%s\" required>\n<option value=\"Male\">Male</option>\n<option value=\"Female\">Female</option></select><br>", displayName, varName);
 				case Birthday: //TODO; not sure how it's retrieved from the DB. We'll get to that bit later.
 				default:
-					return String.format("%s: <input type=\"%s\" name=\"%s\" value=\"%s\" %s><br>", displayName, HTMLInputType, varName, getInfoForUser(userID), (required ? "required" : ""));
+					return String.format("%s: <input type=\"%s\" name=\"%s\" value=\"%s\" %s><br>", displayName, HTMLInputType, varName, getInfoForUser(new User(userID)), (required ? "required" : ""));
 			}
 		}
 	}
@@ -312,8 +307,8 @@ public class Global {
 	public class User{
 		Map<PersonalInfo, String> info = null;
 		private String userID;
-		public User(int x){
-			userID = Integer.toString(x);
+		public User(String ID){
+			userID = ID;
 			info = getAllUserInfo();
 		}
 		public Map<PersonalInfo, String> getAllUserInfo() {
