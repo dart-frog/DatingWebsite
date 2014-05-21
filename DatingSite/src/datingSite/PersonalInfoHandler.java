@@ -1,12 +1,16 @@
 package datingSite;
 
 import java.io.IOException;
+import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import datingSite.Global.PersonalInfo;
+import datingSite.Global.User;
 
 /**
  * Servlet implementation class PersonalInfoHandler
@@ -34,9 +38,10 @@ public class PersonalInfoHandler extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		User user = Global.getUserFromRequest
-		for(PersonalInfo pi : PersonalInfo) {
-			
+		User user = Global.getUserFromRequest(request);
+		Map<PersonalInfo, String> info = user.getAllUserInfo();
+		for(PersonalInfo pi : PersonalInfo.values()) {
+			info.put(pi, request.getParameter(pi.))
 		}
 	}
 
