@@ -5,9 +5,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Roosevelt Dating Website</title>
-<form action = "LogOutHandler" method = "post">
-	<button type = "submit"> Log out</button>
-</form>
 <%Global.User user = Global.getUserFromRequest(request); %>
 <%String userID = "INVALID USER";
 if(user == null) {
@@ -18,6 +15,9 @@ if(user == null) {
 } %>
 </head>
 <body>
+	<form action = "LogOutHandler" method = "post">
+		<button type = "submit"> Log out</button>
+	</form>
 	<p> Welcome to the profile page! <p>
 	Your session is valid.<br>
 	Your user ID is <%=userID %>.<br>
@@ -26,16 +26,13 @@ if(user == null) {
 
 	<div id=personalInfoDiv>
 		<h3>Personal Information</h3>
-		<form id=personalInfoForm>
+		<form id=personalInfoForm method="post">
 			<%for(Global.PersonalInfo pi : Global.PersonalInfo.values()) { %>
 				<%=pi.getHTMLInputTag(user) %>
 			<%} %>
 			<input type="submit" value="Submit">
 		</form>
 	</div>
-	
-	<!-- Is making GET requests to LogInHandler always a log out command a bad idea?  -->
-	<!-- Yeah, probably. -->
 <%=Global.getNavBar() %>
 </body>
 </html>
