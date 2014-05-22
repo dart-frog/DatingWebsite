@@ -341,10 +341,12 @@ public class Global {
 		}
 		
 		public StatusCodes updatePersonalInfo(Map<PersonalInfo, String> infoMap) {
-			String queryTemplate = "UPDATE datingsite.UserData SET ? = ? WHERE UserID = ?";
+			String queryTemplate = "UPDATE datingsite.UserData SET %s = ? WHERE UserID = ?";
+			String query;
 			try {
 				for(PersonalInfo pi : infoMap.keySet()) {
-					Global.executeQueryWithParamsWithoutResults(queryTemplate, pi.getVarName(), infoMap.get(pi), userID);
+					query = String.format(queryTemplate, pi.getVarName());
+					Global.executeQueryWithParamsWithoutResults(query, infoMap.get(pi), userID);
 				}
 				return StatusCodes.Success;
 			} catch(Exception e) {
