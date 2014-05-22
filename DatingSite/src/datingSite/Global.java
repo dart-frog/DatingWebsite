@@ -285,8 +285,8 @@ public class Global {
 		
 		public String getInfoForUser(User user) {
 			try {
-				String query = "SELECT ? FROM datingsite.UserData WHERE UserID = ?;";
-				ResultSet rs = executeQueryWithParams(query, this.getVarName(), user.userID);
+				String query = String.format("SELECT %s FROM datingsite.UserData WHERE UserID = ?;", this.getVarName());
+				ResultSet rs = executeQueryWithParams(query, user.userID);
 				rs.next();
 				return rs.getString(1);
 			} catch(Exception e) {
