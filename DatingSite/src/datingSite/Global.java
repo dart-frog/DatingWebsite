@@ -375,8 +375,6 @@ public class Global {
 					String query = "SELECT * FROM datingsite.UserData WHERE UserID = ?;";
 					ResultSet rs = executeQueryWithParams(query, userID);
 					rs.next();
-					ResultSetMetaData md = rs.getMetaData();
-					int columns = md.getColumnCount();
 					Map<PersonalInfo, String> info = new HashMap<PersonalInfo, String>();
 					for(PersonalInfo pi : PersonalInfo.values()) {
 						String columnName = pi.getVarName();
