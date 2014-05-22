@@ -251,8 +251,8 @@ public class Global {
 		//TODO: PersonalInfoHandler?
 		FirstName(true, "FirstName", "First Name", "text"),
 		LastName(true, "LastName", "Last Name", "text"),
-		Class(true, "Class", "Class", "number\" min=\"2014\" max=\"2019"), //TODO: This is hackish; let's make it better later.
 		Birthday(true, "Birthday", "Birthday", "date"), //TODO: make a special case 
+		Class("Class", "Class"),
 		Gender("Gender", "Gender"),
 		;
 		
@@ -299,6 +299,8 @@ public class Global {
 			switch(this) {
 				case Gender:
 					return String.format("%s: <select name=\"%s\" required>\n<option value=\"Male\">Male</option>\n<option value=\"Female\">Female</option></select><br>", displayName, getVarName());
+				case Class:
+					return String.format("%s: <input type=\"number\" name=\"%s\" value=\"%d\" min=\"2014\" max=\"2019\" required><br>", displayName, getVarName(), Integer.parseInt(getInfoForUser(user)));
 				case Birthday: //TODO; not sure how it's retrieved from the DB. We'll get to that bit later.
 				default:
 					return String.format("%s: <input type=\"%s\" name=\"%s\" value=\"%s\" %s><br>", displayName, HTMLInputType, getVarName(), getInfoForUser(user), (required ? "required" : ""));
@@ -309,6 +311,8 @@ public class Global {
 			switch(this) {
 				case Gender:
 					return String.format("%s: <select name=\"%s\" required>\n<option value=\"Male\">Male</option>\n<option value=\"Female\">Female</option></select><br>", displayName, getVarName());
+				case Class:
+					return String.format("%s: <input type=\"number\" name=\"%s\" min=\"2014\" max=\"2019\" required><br>", displayName, getVarName());
 				case Birthday: //TODO; not sure how it's retrieved from the DB. We'll get to that bit later.
 				default:
 					return String.format("%s: <input type=\"%s\" name=\"%s\" %s><br>", displayName, HTMLInputType, getVarName(), (required ? "required" : ""));
