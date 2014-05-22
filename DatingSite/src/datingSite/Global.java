@@ -337,18 +337,6 @@ public class Global {
 		}
 		
 		public StatusCodes updatePersonalInfo(Map<PersonalInfo, String> infoMap) {
-			try {
-				String query = "SELECT COUNT(*) FROM datingsite.UserData WHERE UserID = ?";
-				ResultSet rs = executeQueryWithParams(query, userID);
-				rs.next();
-				int count = rs.getInt(1);
-				if(count < 1) {
-					query = "INSERT INTO datingsite.UserData (UserID) VALUES (?)";
-					executeQueryWithParamsWithoutResults(query, userID);
-				}
-			} catch(SQLException e) {
-				e.printStackTrace();
-			}
 			String queryTemplate = "UPDATE datingsite.UserData SET ? = ? WHERE UserID = ?";
 			try {
 				for(PersonalInfo pi : infoMap.keySet()) {
@@ -365,6 +353,18 @@ public class Global {
 			if(info != null) {
 				return info;
 			} else {
+				try {
+					String query = "SELECT COUNT(*) FROM datingsite.UserData WHERE UserID = ?";
+					ResultSet rs = executeQueryWithParams(query, userID);
+					rs.next();
+					int count = rs.getInt(1);
+					if(count < 1) {
+						query = "INSERT INTO datingsite.UserData (UserID) VALUES (?)";
+						executeQueryWithParamsWithoutResults(query, userID);
+					}
+				} catch(SQLException e) {
+					e.printStackTrace();
+				}
 				try {
 					String query = "SELECT * FROM datingsite.UserData WHERE UserID = ?;";
 					ResultSet rs = executeQueryWithParams(query, userID);
