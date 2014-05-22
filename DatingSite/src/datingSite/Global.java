@@ -341,7 +341,7 @@ public class Global {
 		}
 		
 		public StatusCodes updatePersonalInfo(Map<PersonalInfo, String> infoMap) {
-			String queryTemplate = "UPDATE datingsite.UserData SET %s = ? WHERE UserID = ?";
+			String queryTemplate = "UPDATE datingsite.UserData SET %s = ? WHERE UserID = ?;";
 			String query;
 			try {
 				for(PersonalInfo pi : infoMap.keySet()) {
