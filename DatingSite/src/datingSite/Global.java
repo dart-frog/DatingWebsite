@@ -102,20 +102,23 @@ public class Global {
 		}
 	}
 	
-	public static StatusCodes logOutUser(HttpServletRequest request) {
+	public static StatusCodes logOutUser(HttpServletRequest request) { //TODO: Move to LogOutHandler
 		if(!isSessionValid(request)) return StatusCodes.SessionInvalid;
 		String SessionID = getSessionIDFromRequest(request);
 		String query = "DELETE FROM datingsite.Sessions WHERE SessionID = ?";
 		try{
 			executeQueryWithParamsWithoutResults(query, SessionID);
 			return StatusCodes.Success;
-		} catch(Exception e) {
-			e.printStackTrace();
+		} catch(SQLException e) {
+			setError(request, "A SQL error occurred.");
 			return StatusCodes.SQLError;
+		} catch(Exception e) {
+			setError(request, "An error occurred.");
+			return StatusCodes.UnspecifiedError;
 		}
 	}
 	
-	public static StatusCodes logInUser(String email, String password, HttpServletResponse response){
+	public static StatusCodes logInUser(String email, String password, HttpServletResponse response){ //TODO: Move to LogInHandler
 		Connect stream = new Connect();
 		Connection con = stream.getConnection();
 		try{
@@ -159,17 +162,21 @@ public class Global {
 		}
 	}
 	
-	public static StatusCodes createAndAddNewUser(String email, String password, HttpServletResponse response){
-		Connect stream = new Connect();
-		Connection con = stream.getConnection();
+	public static StatusCodes createAndAddNewUser(String email, String password, HttpServletResponse response){ //TODO: Move to RegistrationHandler
 		try{
-			String SQL = "INSERT INTO datingsite.Users (email, password) VALUES (?,?)"; 
-			PreparedStatement pstmt = con.prepareStatement(SQL);
-			pstmt.setString(1, email);
-			pstmt.setString(2, password);
-			int count = pstmt.executeUpdate();
-			System.out.println("ROWS AFFECTED:" + count);
-			pstmt.close();
+			String SQL = "INSERT INTO datingsite.Users (email, password) VALUES (?,?); SCOPE_IDENTITY();"; 
+			ResultSet rs = executeQueryWithParams(SQL, email, password);
+			rs.next();
+			String userID = rs.getString(1);
+			rs.close();
+			
+			try {
+				SQL = "INSERT INTO datingsite.UserData (UserID) VALUES (?)";
+				executeQueryWithParamsWithoutResults(SQL, userID);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
 			try {
 				StatusCodes code = logInUser(email, password, response);
 				if(code != StatusCodes.Success) throw new Error("Something is very wrong.");
@@ -180,7 +187,7 @@ public class Global {
 			return StatusCodes.Success;
 		} catch(Exception e){
 			e.printStackTrace();
-			return StatusCodes.UnspecifiedError;
+			return StatusCodes.SQLError;
 		}
 	
 	}
@@ -330,6 +337,18 @@ public class Global {
 		}
 		
 		public StatusCodes updatePersonalInfo(Map<PersonalInfo, String> infoMap) {
+			try {
+				String query = "SELECT COUNT(*) FROM datingsite.UserData WHERE UserID = ?";
+				ResultSet rs = executeQueryWithParams(query, userID);
+				rs.next();
+				int count = rs.getInt(1);
+				if(count < 1) {
+					query = "INSERT INTO datingsite.UserData (UserID) VALUES (?)";
+					executeQueryWithParamsWithoutResults(query, userID);
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
 			String queryTemplate = "UPDATE datingsite.UserData SET ? = ? WHERE UserID = ?";
 			try {
 				for(PersonalInfo pi : infoMap.keySet()) {
