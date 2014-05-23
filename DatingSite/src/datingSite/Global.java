@@ -348,6 +348,7 @@ public class Global {
 					query = String.format(queryTemplate, pi.getVarName());
 					Global.executeQueryWithParamsWithoutResults(query, infoMap.get(pi), userID);
 				}
+				this.info = getAllUserInfo();
 				return StatusCodes.Success;
 			} catch(Exception e) {
 				e.printStackTrace();

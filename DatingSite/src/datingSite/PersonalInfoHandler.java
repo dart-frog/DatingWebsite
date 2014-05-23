@@ -50,8 +50,12 @@ public class PersonalInfoHandler extends HttpServlet {
 				return;
 			case SQLError:
 				Global.setError(request, "A SQL error occurred.");
+				return;
 			case Success:
+				Global.setError(request, "Success!");
+				return;
 			default:
+				Global.setError(request, "Something happened.");
 		}
 	}
 
