@@ -15,6 +15,10 @@ if(user == null) {
 } %>
 </head>
 <body>
+	<%if(session.getAttribute("error") != null) { %>
+		<span style="color:red;"><%=session.getAttribute("error") %></span>
+		<%session.setAttribute("error", null); %>
+	<%} %>
 	<form action = "LogOutHandler" method = "post">
 		<button type = "submit"> Log out</button>
 	</form>
