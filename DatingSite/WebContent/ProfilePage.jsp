@@ -37,6 +37,6 @@ if(user == null) {
 			<input type="submit" value="Submit">
 		</form>
 	</div>
-<%=Global.getNavBar() %>
+<%@include file="NavBar.jsp" %>
 </body>
 </html>
