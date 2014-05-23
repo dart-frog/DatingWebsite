@@ -30,7 +30,7 @@ if(user == null) {
 
 	<div id=personalInfoDiv>
 		<h3>Personal Information</h3>
-		<form id=personalInfoForm method="post">
+		<form id=personalInfoForm method="post" action="PersonalInfoHandler">
 			<%for(Global.PersonalInfo pi : Global.PersonalInfo.values()) { %>
 				<%=pi.getHTMLInputTag(user) %>
 			<%} %>

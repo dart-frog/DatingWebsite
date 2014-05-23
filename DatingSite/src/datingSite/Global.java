@@ -82,10 +82,7 @@ public class Global {
 			rs.next();
 			return new User(rs.getString(1));
 		} catch(Exception e) {
-			if(!e.getLocalizedMessage().trim().equals("The result set has no current row.")) {
-				e.printStackTrace();
-			}
-			
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -298,7 +295,7 @@ public class Global {
 		public String getHTMLInputTag(User user) { //TODO: Create special cases for certain personal info types
 			switch(this) {
 				case Gender:
-					return String.format("%s: <select name=\"%s\" required>\n<option value=\"Male\">Male</option>\n<option value=\"Female\">Female</option></select><br>", displayName, getVarName());
+					return String.format("%s: <select name=\"%s\" required>\n<option value=0>Male</option>\n<option value=1>Female</option></select><br>", displayName, getVarName());
 				case Class:
 					return String.format("%s: <input type=\"number\" name=\"%s\" value=\"%d\" min=\"2014\" max=\"2019\" required><br>", displayName, getVarName(), Integer.parseInt(getInfoForUser(user)));
 				case Birthday: //TODO; not sure how it's retrieved from the DB. We'll get to that bit later.
@@ -310,7 +307,7 @@ public class Global {
 		public String getBlankHTMLInputTag() { //TODO: Create special cases for certain personal info types
 			switch(this) {
 				case Gender:
-					return String.format("%s: <select name=\"%s\" required>\n<option value=\"Male\">Male</option>\n<option value=\"Female\">Female</option></select><br>", displayName, getVarName());
+					return String.format("%s: <select name=\"%s\" required>\n<option value=0>Male</option>\n<option value=1>Female</option></select><br>", displayName, getVarName());
 				case Class:
 					return String.format("%s: <input type=\"number\" name=\"%s\" min=\"2014\" max=\"2019\" required><br>", displayName, getVarName());
 				case Birthday: //TODO; not sure how it's retrieved from the DB. We'll get to that bit later.
@@ -341,6 +338,7 @@ public class Global {
 		}
 		
 		public StatusCodes updatePersonalInfo(Map<PersonalInfo, String> infoMap) {
+			System.out.println("map eqauls" +infoMap.toString());
 			String queryTemplate = "UPDATE datingsite.UserData SET %s = ? WHERE UserID = ?;";
 			String query;
 			try {

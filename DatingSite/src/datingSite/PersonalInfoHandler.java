@@ -43,20 +43,25 @@ public class PersonalInfoHandler extends HttpServlet {
 		for(PersonalInfo pi : PersonalInfo.values()) {
 			infoMap.put(pi, request.getParameter(pi.getVarName()));
 		}
+		System.out.println(infoMap.toString());
 		Global.StatusCodes code = user.updatePersonalInfo(infoMap);
+		String error = "";
+		String redirect = "Home.jsp";
 		switch(code) {
-			case UnspecifiedError:
-				Global.setError(request, "An error occurred.");
-				return;
 			case SQLError:
-				Global.setError(request, "A SQL error occurred.");
-				return;
+				error = "A SQL error occurred.";
+				redirect = "ProfilePage.jsp";
+				break;
 			case Success:
-				Global.setError(request, "Success!");
-				return;
+				redirect = "ProfilePage.jsp";
+				break;
 			default:
-				Global.setError(request, "Something happened.");
+				error = "Something happened.";
+				redirect = "Home.jsp";
+				break;
 		}
+		response.sendRedirect(redirect);
+		Global.setError(request, error);
 	}
 
 }
