@@ -43,7 +43,16 @@ public class PersonalInfoHandler extends HttpServlet {
 		for(PersonalInfo pi : PersonalInfo.values()) {
 			infoMap.put(pi, request.getParameter(pi.getVarName()));
 		}
-		user.updatePersonalInfo(infoMap);
+		Global.StatusCodes code = user.updatePersonalInfo(infoMap);
+		switch(code) {
+			case UnspecifiedError:
+				Global.setError(request, "An error occurred.");
+				return;
+			case SQLError:
+				Global.setError(request, "A SQL error occurred.");
+			case Success:
+			default:
+		}
 	}
 
 }
