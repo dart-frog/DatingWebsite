@@ -16,7 +16,7 @@ display:inline;
 		<li> <a href= 'MessageHub.jsp'> Message Hub </a> </li> 
 		<li> <a href= 'MatchMaker.jsp'> Match Maker </a> </li> 
 		<li> <a href= 'Lists.jsp'> Lists </a> </li> 
-		</ul>
+	</ul>
 
 </body>
 </html>
