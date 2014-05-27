@@ -2,7 +2,6 @@ package datingSite;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
@@ -275,7 +274,7 @@ public class Global {
 		public String getVarName() {
 			return varName;
 		}
-
+		
 		public boolean isRequired() {
 			return required;
 		}
@@ -298,7 +297,6 @@ public class Global {
 					return String.format("%s: <select name=\"%s\" required>\n<option value=0>Male</option>\n<option value=1>Female</option></select><br>", displayName, getVarName());
 				case Class:
 					return String.format("%s: <input type=\"number\" name=\"%s\" value=\"%d\" min=\"2014\" max=\"2019\" required><br>", displayName, getVarName(), Integer.parseInt(getInfoForUser(user)));
-				case Birthday: //TODO; not sure how it's retrieved from the DB. We'll get to that bit later.
 				default:
 					return String.format("%s: <input type=\"%s\" name=\"%s\" value=\"%s\" %s><br>", displayName, HTMLInputType, getVarName(), getInfoForUser(user), (required ? "required" : ""));
 			}
@@ -310,7 +308,6 @@ public class Global {
 					return String.format("%s: <select name=\"%s\" required>\n<option value=0>Male</option>\n<option value=1>Female</option></select><br>", displayName, getVarName());
 				case Class:
 					return String.format("%s: <input type=\"number\" name=\"%s\" min=\"2014\" max=\"2019\" required><br>", displayName, getVarName());
-				case Birthday: //TODO; not sure how it's retrieved from the DB. We'll get to that bit later.
 				default:
 					return String.format("%s: <input type=\"%s\" name=\"%s\" %s><br>", displayName, HTMLInputType, getVarName(), (required ? "required" : ""));
 			}
