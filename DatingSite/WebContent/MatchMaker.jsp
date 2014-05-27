@@ -7,6 +7,6 @@
 <title>Get your Match</title>
 </head>
 <body>
-
+<% Global.getBlankHtmlTag() %>
 </body>
 </html>
