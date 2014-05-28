@@ -391,7 +391,9 @@ public class Global {
 					Map<PersonalInfo, String> info = new HashMap<PersonalInfo, String>();
 					for(PersonalInfo pi : PersonalInfo.values()) {
 						String columnName = pi.getVarName();
-						info.put(pi, rs.getString(columnName));
+						String data = rs.getString(columnName);
+						if(pi == PersonalInfo.Gender) data = (data.equals("1") ? "Female" : "Male");
+						info.put(pi, data);
 					}
 					return info;
 				} catch(Exception e) {
