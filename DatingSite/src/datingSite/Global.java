@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -322,8 +323,19 @@ public class Global {
 	50 average
 	100 super compatible
 	*/
-	public double getGenderCompatiblity(Boolean isUser1Male, boolean isUser2Male ){
-		return 0;
+	public List<User> getUsersForInfo(String firstName, String lastName, String gender, String Class){
+		if(firstName == null) firstName = "*";
+		if(lastName == null) lastName = "*";
+		if(gender == null) gender = "*";
+		if(Class == null) Class = "*";
+		String query = "";
+		try {
+			ResultSet rs = executeQueryWithParams(query, null);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public static class User{
