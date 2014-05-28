@@ -5,30 +5,31 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
-<% Global.User currentUser = Global.getUserFromRequest(request);
-Global.User otherUser = null;
-Map<Global.PersonalInfo, String> otherUserInfoMap = null;
-String currentUserID = "INVALID USER";
-String otherUserID = request.getParameter("user");
-if(currentUser == null) {
+<%
+Global.User currentUser=null, otherUser=null;
+String currentUserID, otherUserID;
+
+try {
+	currentUser = Global.getUserFromRequest(request);
+	currentUserID = currentUser.getUserID();
+} catch(IllegalArgumentException e) {
 	response.sendRedirect("Home.jsp");
 	Global.setError(session, "Invalid Session");
-} else if(otherUserID == null) {
-	response.sendRedirect("ProfilePage.jsp");
-	Global.setError(session, "User not found.");
-} else {
-	currentUserID = currentUser.getUserID();
-	otherUser = new Global.User(otherUserID);
-} 
+}
 
-if(otherUser == null) {
+try {
+	otherUserID = request.getParameter("user");
+	otherUser = new Global.User(otherUserID);
+} catch(IllegalArgumentException e) {
 	response.sendRedirect("ProfilePage.jsp");
 	Global.setError(session, "User not found.");
-} else {
-	otherUserInfoMap = otherUser.getAllUserInfo();
-}%>
+}
+
+Map<Global.PersonalInfo, String> otherUserInfoMap = null;
+%>
 </head>
 <body>
+<%if(currentUser != null && otherUser != null) {%>
 <h1>Currently viewing the page of user <%=otherUserInfoMap.get(Global.PersonalInfo.FirstName) %>.</h1>
 <h2>Personal Information:</h2>
 <%for(Global.PersonalInfo pi : Global.PersonalInfo.values()) { %>
@@ -36,6 +37,7 @@ if(otherUser == null) {
 	<%=": " %>
 	<%=otherUserInfoMap.get(pi) %>
 	<br>
+<%} %>
 <%} %>
 <%@include file="NavBar.jsp" %>
 </body>

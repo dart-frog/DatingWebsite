@@ -329,7 +329,20 @@ public class Global {
 	public static class User{
 		Map<PersonalInfo, String> info = null;
 		private String userID;
-		public User(String ID){
+		
+		public User(String ID) {
+			ResultSet rs;
+			try {
+				rs = executeQueryWithParams("SELECT COUNT(*) FROM datingsite.Users WHERE ID = ?;", ID);
+				rs.next();
+				int count = rs.getInt(1);
+				rs.close();
+				if(count <= 0) throw new IllegalArgumentException(ID);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				throw new IllegalArgumentException(ID);
+			}
 			userID = ID;
 			info = getAllUserInfo();
 		}
