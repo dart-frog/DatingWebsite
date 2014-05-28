@@ -25,11 +25,11 @@ try {
 	Global.setError(session, "User not found.");
 }
 
-Map<Global.PersonalInfo, String> otherUserInfoMap = null;
 %>
 </head>
 <body>
-<%if(currentUser != null && otherUser != null) {%>
+<%if(currentUser != null && otherUser != null) {
+Map<Global.PersonalInfo, String> otherUserInfoMap = otherUser.getAllUserInfo();%>
 <h1>Currently viewing the page of user <%=otherUserInfoMap.get(Global.PersonalInfo.FirstName) %>.</h1>
 <h2>Personal Information:</h2>
 <%for(Global.PersonalInfo pi : Global.PersonalInfo.values()) { %>
