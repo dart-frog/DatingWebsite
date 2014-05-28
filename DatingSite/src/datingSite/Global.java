@@ -322,7 +322,7 @@ public class Global {
 	50 average
 	100 super compatible
 	*/
-	public double getCompatiblity(User x,User y){
+	public double getGenderCompatiblity(Boolean isUser1Male, boolean isUser2Male ){
 		return 0;
 	}
 

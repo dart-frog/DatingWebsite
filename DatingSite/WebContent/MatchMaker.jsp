@@ -8,9 +8,10 @@
 </head>
 <body>
 <p> Search for other people on the datingsite</p>
-<form>
+<form id= searchForm method="get" action = "SearchHandler">
 <% for(Global.PersonalInfo pi : Global.PersonalInfo.values()){%>
-	<% pi.getBlankHTMLInputTag(); %>
+	<% if(pi == Global.PersonalInfo.Birthday) continue; %>
+	<%= pi.getBlankHTMLInputTag() %>
 <% } %>
 </form>
 </body>
