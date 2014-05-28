@@ -9,7 +9,9 @@
 <body>
 <p> Search for other people on the datingsite</p>
 <form>
-
+<% for(Global.PersonalInfo pi : Global.PersonalInfo.values()){%>
+	<% pi.getBlankHTMLInputTag(); %>
+<% } %>
 </form>
 </body>
 </html>
