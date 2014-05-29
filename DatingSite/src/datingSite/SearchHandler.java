@@ -27,7 +27,11 @@ public class SearchHandler extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		String firstName = request.getParameter("FirstName");
+		String lastName = request.getParameter("LastName");
+		String gender = request.getParameter("Gender");
+		String Class = request.getParameter("Class");
+		Global.getUsersForInfo(firstName, lastName , gender , Class );
 	}
 
 	/**

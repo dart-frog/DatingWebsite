@@ -13,6 +13,7 @@
 	<% if(pi == Global.PersonalInfo.Birthday) continue; %>
 	<%= pi.getBlankHTMLInputTag() %>
 <% } %>
+<input type="submit" value="Submit">
 </form>
 </body>
 </html>
