@@ -4,7 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -317,16 +319,61 @@ public class Global {
 			return displayName;
 		}
 	}
-	/*
-	0 not compatible
-	50 average
-	100 super compatible
-	*/
-	public double getGenderCompatiblity(Boolean isUser1Male, boolean isUser2Male ){
-		return 0;
+	
+	public static class Message {
+		private User sender;
+		private User recipient;
+		private String messageText;
+		private String messageID;
+		private boolean sent;
+		
+		public Message(User sender, User recipient, String messageText) {
+			this.sender = sender;
+			this.recipient = recipient;
+			this.messageText = messageText;
+			this.messageID = null;
+			this.sent = false;
+		}
+		
+		public Message(User sender, User recipient, String messageText, String messageID) {
+			this.sender = sender;
+			this.recipient = recipient;
+			this.messageText = messageText;
+			this.messageID = messageID;
+			this.sent = true;
+		}
+		
+		public boolean isSent() {
+			return sent;
+		}
+		
+		public void send() {
+			String query = "INSERT INTO datingsite.Messages (SenderID, RecipientID, Text) VALUES (?, ?, ?); SELECT SCOPE_IDENTITY;";
+			try {
+				ResultSet rs = executeQueryWithParams(query, sender.getUserID(), recipient.getUserID(), messageText);
+				rs.next();
+				messageID = rs.getString(1);
+				sent = true;
+			} catch(SQLException e) {
+				e.printStackTrace();
+				//TODO: Error handling
+			}
+		}
+		
+		public User getSender() {
+			return sender;
+		}
+		
+		public User getRecipient() {
+			return recipient;
+		}
+		
+		public String getText() {
+			return messageText;
+		}
 	}
 
-	public static class User{
+	public static class User {
 		Map<PersonalInfo, String> info = null;
 		private String userID;
 		
@@ -349,6 +396,44 @@ public class Global {
 		
 		public String getUserID() {
 			return userID;
+		}
+		
+		public List<Message> getRecievedMessages() {
+			List<Message> messages = new ArrayList<Message>();
+			try {
+				String query = "SELECT * FROM datingsite.Messages WHERE RecipientID = ?;";
+				ResultSet rs = executeQueryWithParams(query, userID);
+				String text, messageID;
+				User sender;
+				while(rs.next()) {
+					messageID = rs.getString("MessageID");
+					sender = new User(rs.getString("SenderID"));
+					text = rs.getString("Text");
+					messages.add(0, new Message(sender, this, text, messageID));
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+			return messages;
+		}
+		
+		public List<Message> getSentMessages() {
+			List<Message> messages = new ArrayList<Message>();
+			try {
+				String query = "SELECT * FROM datingsite.Messages WHERE SenderID = ?;";
+				ResultSet rs = executeQueryWithParams(query, userID);
+				String text, messageID;
+				User recipient;
+				while(rs.next()) {
+					messageID = rs.getString("MessageID");
+					recipient = new User(rs.getString("RecipientID"));
+					text = rs.getString("Text");
+					messages.add(0, new Message(this, recipient, text, messageID));
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+			return messages;
 		}
 		
 		public StatusCodes updatePersonalInfo(Map<PersonalInfo, String> infoMap) {
