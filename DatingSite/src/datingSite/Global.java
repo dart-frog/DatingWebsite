@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import datingSite.Global.User;
 
 @WebServlet("/Global")
 public class Global {
@@ -325,14 +328,25 @@ public class Global {
 	*/
 	public List<User> getUsersForInfo(String firstName, String lastName, String gender, String Class){
 		if(firstName == null) firstName = "*";
+		else{
+			firstName = "%" + firstName + "%";
+		}
 		if(lastName == null) lastName = "*";
+		else{
+			lastName = "%" + lastName + "%";
+		}
 		if(gender == null) gender = "*";
 		if(Class == null) Class = "*";
-		String query = "";
+		String query = "SELECT UserID FROM datingsite.UserData WHERE FirstName LIKE ?, LastName LIKE ?, Gender = ?,Class = ?";
+		ArrayList<User> matches = new ArrayList<User>();
 		try {
-			ResultSet rs = executeQueryWithParams(query, null);
+			ResultSet rs = executeQueryWithParams(query,firstName, lastName, gender,Class);
+			while(rs.next()){
+				User match = new User(rs.getString("UserID"));
+				matches.add(match);
+			}
+			return matches;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
