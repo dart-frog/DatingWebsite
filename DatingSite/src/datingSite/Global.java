@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import datingSite.Global.User;
+
 @WebServlet("/Global")
 public class Global {
 	public static final String schema = "datingsite";
@@ -221,6 +223,32 @@ public class Global {
 		return out;
 	}
 	
+	public static List<User> getUsersForInfo(String firstName, String lastName, String gender, String Class){
+		if(firstName == null) firstName = "*";
+		else{
+			firstName = "%" + firstName + "%";
+		}
+		if(lastName == null) lastName = "*";
+		else{
+			lastName = "%" + lastName + "%";
+		}
+		if(gender == null) gender = "*";
+		if(Class == null) Class = "*";
+		String query = "SELECT UserID FROM datingsite.UserData WHERE FirstName LIKE ?, LastName LIKE ?, Gender = ?,Class = ?";
+		ArrayList<User> matches = new ArrayList<User>();
+		try {
+			ResultSet rs = executeQueryWithParams(query,firstName, lastName, gender,Class);
+			while(rs.next()){
+				User match = new User(rs.getString("UserID"));
+				matches.add(match);
+			}
+			System.out.println(matches.toString());
+			return matches;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	public static void setError(HttpServletRequest request, String error) {
 		setError(request.getSession(false), error);
 	}
@@ -372,6 +400,12 @@ public class Global {
 			return messageText;
 		}
 	}
+
+	/*
+	0 not compatible
+	50 average
+	100 super compatible
+	*/
 
 	public static class User {
 		Map<PersonalInfo, String> info = null;
