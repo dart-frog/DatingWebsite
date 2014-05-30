@@ -41,6 +41,7 @@ public class Global {
 		for(int i = 0; i < params.length; i++) {
 			pstmt.setString(i+1, params[i]);
 		}
+		
 		ResultSet rs = pstmt.executeQuery();
 		return rs;
 	}
@@ -224,20 +225,21 @@ public class Global {
 	}
 	
 	public static List<User> getUsersForInfo(String firstName, String lastName, String gender, String Class){
-		if(firstName == null) firstName = "*";
+		if(firstName.equals("")) firstName = "*";
 		else{
 			firstName = "%" + firstName + "%";
 		}
-		if(lastName == null) lastName = "*";
+		if(lastName.equals("")) lastName = "*";
 		else{
 			lastName = "%" + lastName + "%";
 		}
-		if(gender == null) gender = "*";
-		if(Class == null) Class = "*";
-		String query = "SELECT UserID FROM datingsite.UserData WHERE FirstName LIKE ?, LastName LIKE ?, Gender = ?,Class = ?";
+		if(gender.equals("")) gender = "*";
+		if(gender.equals("")) Class = "*";
+		String query = "SELECT UserID FROM datingsite.UserData WHERE FirstName LIKE ? OR LastName LIKE ? OR Gender = ? OR Class = ?;";
 		ArrayList<User> matches = new ArrayList<User>();
 		try {
 			ResultSet rs = executeQueryWithParams(query,firstName, lastName, gender,Class);
+			System.out.println(rs);
 			while(rs.next()){
 				User match = new User(rs.getString("UserID"));
 				matches.add(match);
