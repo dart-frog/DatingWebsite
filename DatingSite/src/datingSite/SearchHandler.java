@@ -2,11 +2,15 @@ package datingSite;
 
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import datingSite.Global.User;
 
 /**
  * Servlet implementation class SearchHandler
@@ -31,7 +35,20 @@ public class SearchHandler extends HttpServlet {
 		String lastName = request.getParameter("LastName");
 		String gender = request.getParameter("Gender");
 		String Class = request.getParameter("Class");
-		Global.getUsersForInfo(firstName, lastName , gender , Class );
+		List<User> users = Global.getUsersForInfo(firstName, lastName , gender , Class );
+		response.setContentType("text/xml");
+		StringBuilder sb = new StringBuilder();
+		sb.append("<users>");
+		for(User user : users) {
+			sb.append("<user>");
+			sb.append("<id>" + user.getUserID() + "</id>");
+			sb.append("<firstName>" + user.info.get(Global.PersonalInfo.FirstName) + "</firstName>");
+			sb.append("<lastName>" + user.info.get(Global.PersonalInfo.LastName) + "</lastName>");
+			sb.append("<class>" + user.info.get(Global.PersonalInfo.Class) + "</class>");
+			sb.append("<gender>" + user.info.get(Global.PersonalInfo.Gender) + "</gender>");
+			sb.append("<user>");
+		}
+		sb.append("<users>");
 	}
 
 	/**
