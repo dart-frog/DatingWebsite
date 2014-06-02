@@ -225,17 +225,24 @@ public class Global {
 	}
 	
 	public static List<User> getUsersForInfo(String firstName, String lastName, String gender, String Class){
-		if(firstName.equals("")) firstName = "*";
+		//create array of params
+		if(firstName.equals("")) firstName= "%";
 		else{
-			firstName = "%" + firstName + "%";
+			firstName = "Like" + "%" + firstName + "%";
 		}
-		if(lastName.equals("")) lastName = "*";
+		if(lastName.equals("")) lastName = "%";
 		else{
 			lastName = "%" + lastName + "%";
 		}
-		if(gender.equals("")) gender = "*";
-		if(gender.equals("")) Class = "*";
-		String query = "SELECT UserID FROM datingsite.UserData WHERE FirstName LIKE ? OR LastName LIKE ? OR Gender = ? OR Class = ?;";
+		if(gender.equals("")) gender = "%";
+		if(Class.equals("")) Class = "%";
+		String query = "SELECT UserID FROM datingsite.UserData WHERE";
+		//for array length
+			//first time add where
+			//next time add and
+			
+		
+				String x = " FirstName LIKE ? AND LastName LIKE ? AND Gender = ?  AND Class = ?;";
 		ArrayList<User> matches = new ArrayList<User>();
 		try {
 			ResultSet rs = executeQueryWithParams(query,firstName, lastName, gender,Class);
@@ -330,8 +337,10 @@ public class Global {
 					return String.format("%s: <select name=\"%s\" required>\n<option value=0>Male</option>\n<option value=1>Female</option></select><br>", getDisplayName(), getVarName());
 				case Class:
 					return String.format("%s: <input type=\"number\" name=\"%s\" value=\"%d\" min=\"2014\" max=\"2019\" required><br>", getDisplayName(), getVarName(), Integer.parseInt(getInfoForUser(user)));
+				/*
 				case Picture:
 					return String.format("%s: <input type=\"file\" name= \"%s\" value=\"%d\" ");
+				*/
 				default:
 					return String.format("%s: <input type=\"%s\" name=\"%s\" value=\"%s\" %s><br>", getDisplayName(), HTMLInputType, getVarName(), getInfoForUser(user), (required ? "required" : ""));
 			}
