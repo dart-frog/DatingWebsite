@@ -282,6 +282,7 @@ public class Global {
 		Birthday(true, "Birthday", "Birthday", "date"), //TODO: make a special case 
 		Class("Class", "Class"),
 		Gender("Gender", "Gender"),
+		Picture("Picture","Picture"),
 		;
 		
 		private final boolean required;
@@ -329,6 +330,8 @@ public class Global {
 					return String.format("%s: <select name=\"%s\" required>\n<option value=0>Male</option>\n<option value=1>Female</option></select><br>", getDisplayName(), getVarName());
 				case Class:
 					return String.format("%s: <input type=\"number\" name=\"%s\" value=\"%d\" min=\"2014\" max=\"2019\" required><br>", getDisplayName(), getVarName(), Integer.parseInt(getInfoForUser(user)));
+				case Picture:
+					return String.format("%s: <input type=\"file\" name= \"%s\" value=\"%d\" ");
 				default:
 					return String.format("%s: <input type=\"%s\" name=\"%s\" value=\"%s\" %s><br>", getDisplayName(), HTMLInputType, getVarName(), getInfoForUser(user), (required ? "required" : ""));
 			}
