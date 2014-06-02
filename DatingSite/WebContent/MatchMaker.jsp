@@ -11,7 +11,7 @@
 <form id=searchForm method="get" action="doCompletion">
 <% for(Global.PersonalInfo pi : Global.PersonalInfo.values()){%>
 	<% if(pi == Global.PersonalInfo.Birthday) continue; %>
-	<%= pi.getBlankHTMLInputTag() %>
+	<%= pi.getBlankHTMLInputTag().replace("required", "") %>
 <% } %>
 <input type="submit" value="Submit">
 </form>
