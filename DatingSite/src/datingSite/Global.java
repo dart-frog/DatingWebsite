@@ -267,6 +267,26 @@ public class Global {
 		}
 		return null;
 	}
+	public static List<User> getUsersForInfoTest(String firstName, String lastName, String gender, String Class){
+
+		
+		String query = "SELECT UserID FROM datingsite.UserData";
+		
+		ArrayList<User> matches = new ArrayList<User>();
+		try {
+			ResultSet rs = executeQueryWithParams(query,firstName, lastName, gender,Class);
+			System.out.println(rs);
+			while(rs.next()){
+				User match = new User(rs.getString("UserID"));
+				matches.add(match);
+			}
+			System.out.println(matches.toString());
+			return matches;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	public static void setError(HttpServletRequest request, String error) {
 		setError(request.getSession(false), error);
 	}
@@ -298,7 +318,7 @@ public class Global {
 		Birthday(true, "Birthday", "Birthday", "date"), //TODO: make a special case 
 		Class("Class", "Class"),
 		Gender("Gender", "Gender"),
-		//Picture(false ,"Picture","Picture"),
+		
 		;
 		
 		private final boolean required;
