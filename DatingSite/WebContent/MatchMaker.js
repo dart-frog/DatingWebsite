@@ -3,6 +3,9 @@
  */
 
 var req;
+var searchField;
+var usersList;
+
 
 function init() {
 	searchField = document.getElementById("searchForm");
@@ -11,7 +14,13 @@ function init() {
 }
 
 function doCompletion() {
-	var url = "SearchHandler?" + escape(searchField.value);
+	var url = "SearchHandler?";
+	var field;
+	for(var i = 0; i < 4; i++) {
+		field = searchField[i];
+		url += escape(field.name) + "=" + escape(field.value) + "&";
+	}
+	url = url.substring(0, url.length-2);
 	alert(url);
 	req = initRequest();
 	req.open("GET", url, true);
