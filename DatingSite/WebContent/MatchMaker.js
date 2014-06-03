@@ -11,7 +11,8 @@ function init() {
 }
 
 function doCompletion() {
-	var url = "MatchMaker.jsp?" + escape(searchField.values);
+	var url = "SearchHandler?" + escape(searchField.value);
+	alert(url);
 	req = initRequest();
 	req.open("GET", url, true);
 	req.onreadystatechange = callback;
