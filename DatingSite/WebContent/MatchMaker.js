@@ -7,6 +7,7 @@ var req;
 function init() {
 	searchField = document.getElementById("searchForm");
 	usersList = document.getElementById("listOfUsers");
+	document.getElementById("searchForm").setAttribute("onSubmit", "return doCompletion()");
 }
 
 function doCompletion() {

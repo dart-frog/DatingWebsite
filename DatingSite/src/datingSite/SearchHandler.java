@@ -49,6 +49,9 @@ public class SearchHandler extends HttpServlet {
 			sb.append("<user>");
 		}
 		sb.append("<users>");
+		System.out.println("in doGet");
+		System.out.println(sb.toString());
+		
 	}
 
 	/**

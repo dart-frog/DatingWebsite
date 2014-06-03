@@ -225,24 +225,33 @@ public class Global {
 	}
 	
 	public static List<User> getUsersForInfo(String firstName, String lastName, String gender, String Class){
+		System.out.print("hey");
 		//create array of params
-		if(firstName.equals("")) firstName= "%";
-		else{
-			firstName = "Like" + "%" + firstName + "%";
-		}
-		if(lastName.equals("")) lastName = "%";
-		else{
+		ArrayList requiredTraits = new ArrayList<String>();  
+		if(!firstName.equals(""))
+			requiredTraits.add("FirstName LIKE ?"); 
+			firstName = "%" + firstName + "%";
+		if(!lastName.equals(""))
+			requiredTraits.add("LastName LIKE ?");
 			lastName = "%" + lastName + "%";
-		}
-		if(gender.equals("")) gender = "%";
-		if(Class.equals("")) Class = "%";
-		String query = "SELECT UserID FROM datingsite.UserData WHERE";
+		if(!gender.equals("")) 
+			requiredTraits.add("Gender = ?");
+		if(!Class.equals(""))
+			requiredTraits.add("Class = ?");
+		String query = "SELECT UserID FROM datingsite.UserData";
 		//for array length
+		for(int i = 0; i < requiredTraits.size(); i++){
+			if (i == 0){
+				query += "WHERE";
+			}
+			else{
+				query += "AND";	
+			}
+			query += requiredTraits.get(i);
+		}
 			//first time add where
 			//next time add and
-			
-		
-				String x = " FirstName LIKE ? AND LastName LIKE ? AND Gender = ?  AND Class = ?;";
+			//String x = " FirstName LIKE ? AND LastName LIKE ? AND Gender = ?  AND Class = ?;";
 		ArrayList<User> matches = new ArrayList<User>();
 		try {
 			ResultSet rs = executeQueryWithParams(query,firstName, lastName, gender,Class);
