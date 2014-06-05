@@ -12,9 +12,12 @@
  	background-position: center;
  	color: white;
  }
+ h1{
+    text-align: center;
+    
+ }
 </style>
 <title>Roosevelt Dating Website</title>
-<% %>
 <%if(Global.isSessionValid(request)){ %>
 <%response.sendRedirect("ProfilePage.jsp"); %>
 <%} %>

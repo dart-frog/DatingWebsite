@@ -4,6 +4,19 @@
 <html>
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<style>
+ body {
+ 	background-image: url("http://expedino.com/wp-content/uploads/2013/12/Morning-Skyline-Wallpaper.jpg");
+ 	background-repeat: no-repeat;
+ 	background-attachment: fixed;
+ 	background-position: center;
+ 	
+ }
+ h1{
+    text-align: center;
+    
+ }
+</style>
 	<title>Roosevelt Dating Website</title>
 	</head>
 	<body>
