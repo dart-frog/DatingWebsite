@@ -20,12 +20,16 @@ function doCompletion() {
 		field = searchField[i];
 		url += escape(field.name) + "=" + escape(field.value) + "&";
 	}
-	url = url.substring(0, url.length-2);
-	alert(url);
+	url = url.substring(0, url.length-1);
 	req = initRequest();
 	req.open("GET", url, true);
 	req.onreadystatechange = callback;
 	req.send(null);
+}
+
+function doTest() {
+	document.getElementsByName("FirstName")[0].setAttribute("value", "John");
+	return doCompletion();
 }
 
 function initRequest() {
@@ -36,6 +40,7 @@ function callback() {
 	clearUsers();
 	if(req.readyState == 4) {
 		if(req.status == 200) {
+			console.log(req);
 			parseUsers(req.responseXML);
 		}
 	}
