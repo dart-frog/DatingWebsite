@@ -224,7 +224,7 @@ public class Global {
 		return out;
 	}
 	
-	public static List<User> getUsersForInfo(String firstName, String lastName, String gender, String Class){
+	public static List<User> getUsersForInfo(User me,String firstName, String lastName, String gender, String Class){
 		System.out.print("hey");
 		//create array of params
 		ArrayList requiredTraits = new ArrayList<String>();  
@@ -258,7 +258,9 @@ public class Global {
 			System.out.println(rs);
 			while(rs.next()){
 				User match = new User(rs.getString("UserID"));
-				matches.add(match);
+				if(match != me){
+					matches.add(match);
+				}
 			}
 			System.out.println(matches.toString());
 			return matches;

@@ -4,8 +4,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<style>
+ body {
+ 	background-image: url("http://hdwallsource.com/img/2014/6/seattle-wallpaper-20854-21391-hd-wallpapers.jpg");
+ 	background-repeat: no-repeat;
+ 	background-attachment: fixed;
+ 	background-position: center;
+ 	color: white;
+ }
+ h1{
+    text-align: center;
+    
+ }
+</style>
 <title>Roosevelt Dating Website</title>
-<% %>
 <%if(Global.isSessionValid(request)){ %>
 <%response.sendRedirect("ProfilePage.jsp"); %>
 <%} %>
