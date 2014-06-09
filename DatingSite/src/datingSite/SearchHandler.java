@@ -47,24 +47,31 @@ public class SearchHandler extends HttpServlet {
 		sb.append("<users>");
 		if(users != null) {
 			for(User user : users) {
-				sb.append("<user>\n");
-				sb.append("<id>" + user.getUserID() + "</id>\n");
-				sb.append("<firstName>" + user.info.get(Global.PersonalInfo.FirstName) + "</firstName>\n");
-				sb.append("<lastName>" + user.info.get(Global.PersonalInfo.LastName) + "</lastName>\n");
-				sb.append("<class>" + user.info.get(Global.PersonalInfo.Class) + "</class>\n");
-				sb.append("<gender>" + user.info.get(Global.PersonalInfo.Gender) + "</gender>\n");
-				sb.append("<user>\n");
+				sb.append("<user>");
+				sb.append("<id>" + user.getUserID() + "</id>");
+				sb.append("<firstName>" + user.info.get(Global.PersonalInfo.FirstName) + "</firstName>");
+				sb.append("<lastName>" + user.info.get(Global.PersonalInfo.LastName) + "</lastName>");
+				sb.append("<class>" + user.info.get(Global.PersonalInfo.Class) + "</class>");
+				sb.append("<gender>" + user.info.get(Global.PersonalInfo.Gender) + "</gender>");
+				sb.append("</user>");
 			}
 		} else {
-			sb.append("<user>\n");
-			sb.append("<id>0</id>\n");
-			sb.append("<firstName>Test</firstName>\n");
-			sb.append("<lastName>User</lastName>\n");
-			sb.append("<class>2012</class>\n");
-			sb.append("<gender>Wolf</gender>\n");
-			sb.append("<user>\n");
+			sb.append("<user>");
+			sb.append("<id>0</id>");
+			sb.append("<firstName>Test</firstName>");
+			sb.append("<lastName>User</lastName>");
+			sb.append("<class>2012</class>");
+			sb.append("<gender>Pants</gender>");
+			sb.append("</user>");
+			sb.append("<user>");
+			sb.append("<id>0</id>");
+			sb.append("<firstName>Another</firstName>");
+			sb.append("<lastName>Test</lastName>");
+			sb.append("<class>1945</class>");
+			sb.append("<gender>Damp Moss</gender>");
+			sb.append("</user>");
 		}
-		sb.append("<users>\n");
+		sb.append("</users>");
 		System.out.println(sb.toString());
 		out.write(sb.toString());
 		out.flush();

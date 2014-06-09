@@ -8,12 +8,12 @@
 </head>
 <body onload="init()">
 <p> Search for other people on the dating site</p>
-<form id=searchForm method="get">
+<form id=searchForm>
 <% for(Global.PersonalInfo pi : Global.PersonalInfo.values()){%>
 	<% if(pi == Global.PersonalInfo.Birthday) continue; %>
 	<%= pi.getBlankHTMLInputTag().replace("required", "") %>
 <% } %>
-<input type="submit" value="Submit">
+<input id="submitButton" type="button" value="Submit">
 </form>
 
 <span id='listOfUsers'>

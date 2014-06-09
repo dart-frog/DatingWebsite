@@ -10,7 +10,7 @@ var usersList;
 function init() {
 	searchField = document.getElementById("searchForm");
 	usersList = document.getElementById("listOfUsers");
-	document.getElementById("searchForm").setAttribute("onSubmit", "return doCompletion()");
+	document.getElementById("submitButton").setAttribute("onClick", "return doCompletion()");
 }
 
 function doCompletion() {
@@ -46,9 +46,17 @@ function callback() {
 	}
 }
 
+function clearUsers() {
+	if(usersList.getElementsByTagName("div").length > 0) {
+		for(var loop = usersList.childNodes.length - 1; loop >= 0; loop--) {
+			usersList.removeChild(usersList.childNodes[loop]);
+		}
+	}
+}
+
 function addUser(id, firstName, lastName, Class, gender) {
 	var user = document.createElement("div");
-	user.innerHTML = firstName + " " + lastName + "<br>" + Class;
+	user.innerHTML = "Name: " + firstName + " " + lastName + "<br>Class: " + Class + "<br>Gender: " + gender;
 	usersList.appendChild(user);
 }
 
@@ -56,19 +64,11 @@ function parseUsers(responseXML) {
 	var users = responseXML.getElementsByTagName("users")[0];
 	for(var loop = 0; loop < users.childNodes.length; loop++) {
 		var user = users.childNodes[loop];
-		var firstName = user.getElementsByTagName("firstName")[0];
-		var lastName = user.getElementsByTagName("lastName")[0];
-		var id = user.getElementsByTagName("id")[0];
-		var Class = user.getElementsByTagName("Class")[0];
-		var gender = user.getElementsByTagName("gender")[0];
+		var firstName = user.getElementsByTagName("firstName")[0].innerHTML;
+		var lastName = user.getElementsByTagName("lastName")[0].innerHTML;
+		var id = user.getElementsByTagName("id")[0].innerHTML;
+		var Class = user.getElementsByTagName("class")[0].innerHTML;
+		var gender = user.getElementsByTagName("gender")[0].innerHTML;
 		addUser(id, firstName, lastName, Class, gender);
-	}
-}
-
-function clearUsers() {
-	if(usersList.getElementsByTagName("div").length > 0) {
-		for(var loop = usersList.childNodes.length - 1; loop >= 0; loop--) {
-			usersList.removeChild(usersList.childNodes[loop]);
-		}
 	}
 }
