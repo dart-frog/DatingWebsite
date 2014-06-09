@@ -2,6 +2,7 @@ package datingSite;
 
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -31,6 +32,9 @@ public class SearchHandler extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/xml;charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		String firstName = request.getParameter("FirstName");
 		String lastName = request.getParameter("LastName");
 		String gender = request.getParameter("Gender");
@@ -38,22 +42,33 @@ public class SearchHandler extends HttpServlet {
 		List<User> users = Global.getUsersForInfoTest(firstName, lastName , gender , Class );
 		//List<User> users = Global.getUsersForInfo(request.getParameter("ME"),firstName, lastName , gender , Class );
 		response.setContentType("text/xml");
+		response.setContentType("text/xml");
         response.setHeader("Cache-Control", "no-cache");
 		StringBuilder sb = new StringBuilder();
 		sb.append("<users>");
-		for(User user : users) {
-			sb.append("<user>");
-			sb.append("<id>" + user.getUserID() + "</id>");
-			sb.append("<firstName>" + user.info.get(Global.PersonalInfo.FirstName) + "</firstName>");
-			sb.append("<lastName>" + user.info.get(Global.PersonalInfo.LastName) + "</lastName>");
-			sb.append("<class>" + user.info.get(Global.PersonalInfo.Class) + "</class>");
-			sb.append("<gender>" + user.info.get(Global.PersonalInfo.Gender) + "</gender>");
-			sb.append("<user>");
+		if(users != null) {
+			for(User user : users) {
+				sb.append("<user>\n");
+				sb.append("<id>" + user.getUserID() + "</id>\n");
+				sb.append("<firstName>" + user.info.get(Global.PersonalInfo.FirstName) + "</firstName>\n");
+				sb.append("<lastName>" + user.info.get(Global.PersonalInfo.LastName) + "</lastName>\n");
+				sb.append("<class>" + user.info.get(Global.PersonalInfo.Class) + "</class>\n");
+				sb.append("<gender>" + user.info.get(Global.PersonalInfo.Gender) + "</gender>\n");
+				sb.append("<user>\n");
+			}
+		} else {
+			sb.append("<user>\n");
+			sb.append("<id>0</id>\n");
+			sb.append("<firstName>Test</firstName>\n");
+			sb.append("<lastName>User</lastName>\n");
+			sb.append("<class>2012</class>\n");
+			sb.append("<gender>Wolf</gender>\n");
+			sb.append("<user>\n");
 		}
-		sb.append("<users>");
-		System.out.println("in doGet");
+		sb.append("<users>\n");
 		System.out.println(sb.toString());
-		response.getWriter().write(sb.toString());
+		out.write(sb.toString());
+		out.flush();
 	}
 
 	/**
