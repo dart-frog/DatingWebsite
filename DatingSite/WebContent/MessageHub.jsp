@@ -16,6 +16,7 @@ if(!Global.isSessionValid(request)) {
 	
 	</head>
 	<body>
+	<%@include file="NavBar.jsp" %>
 	<h1>Your Messages</h1><br>
 	<h2>Received Messages</h2><br>
 	<%List<Message> receivedMessages = currentUser.getRecievedMessages(); %>
@@ -24,7 +25,7 @@ if(!Global.isSessionValid(request)) {
 		<%=m.getText() %><br><br>
 	<%} %>
 	
-	<%@include file="NavBar.jsp" %>
+	
 	</body>
 <%} %>
 </html>

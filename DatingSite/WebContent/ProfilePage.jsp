@@ -15,6 +15,7 @@ if(user == null) {
 } %>
 </head>
 <body>
+	<%@include file="NavBar.jsp" %>
 	<%if(session.getAttribute("error") != null) { %>
 		<span style="color:red;"><%=session.getAttribute("error") %></span>
 		<%session.setAttribute("error", null); %>
@@ -27,7 +28,7 @@ if(user == null) {
 	Your user ID is <%=userID %>.<br>
 	Your email address is <%=Global.getEmailFromUserID(userID) %>.<br>
 	
-
+	
 	<div id=personalInfoDiv>
 		<h3>Personal Information</h3>
 		<form id=personalInfoForm method="post" action="PersonalInfoHandler">
@@ -37,6 +38,6 @@ if(user == null) {
 			<input type="submit" value="Submit">
 		</form>
 	</div>
-<%@include file="NavBar.jsp" %>
+
 </body>
 </html>

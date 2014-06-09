@@ -7,6 +7,6 @@
 <title> Lists </title>
 </head>
 <body>
-
+<%@include file="NavBar.jsp" %>
 </body>
 </html>
