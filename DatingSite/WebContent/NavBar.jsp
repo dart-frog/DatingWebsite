@@ -5,12 +5,21 @@
 <head>
 <style>
 li{
-display:inline;
+	display:inline;
+	margin: 10;
+    padding: 10;
 }
+ul {
+    list-style-type: none;
+    
+}
+a {font-size:125%}
+
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 </head>
 <body>
+
 	<ul> 
 		<li> <a href= 'ProfilePage.jsp'> Account Page </a> </li>
 		<li> <a href= 'MessageHub.jsp'> Message Hub </a> </li> 
