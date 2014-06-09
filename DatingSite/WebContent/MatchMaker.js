@@ -22,7 +22,7 @@ function doCompletion() {
 	}
 	url = url.substring(0, url.length-1);
 	req = initRequest();
-	req.open("GET", url, true);
+	req.open("GET", url, false);
 	req.onreadystatechange = callback;
 	req.send(null);
 }
