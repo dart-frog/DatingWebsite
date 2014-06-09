@@ -28,6 +28,7 @@ try {
 %>
 </head>
 <body>
+<%@include file="NavBar.jsp" %>
 <%if(currentUser != null && otherUser != null) {
 Map<Global.PersonalInfo, String> otherUserInfoMap = otherUser.getAllUserInfo();%>
 <h1>Currently viewing the page of user <%=otherUserInfoMap.get(Global.PersonalInfo.FirstName) %>.</h1>
@@ -38,6 +39,6 @@ Map<Global.PersonalInfo, String> otherUserInfoMap = otherUser.getAllUserInfo();%
 	<br>
 <%} %>
 <%} %>
-<%@include file="NavBar.jsp" %>
+
 </body>
 </html>
