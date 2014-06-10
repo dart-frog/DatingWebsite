@@ -39,8 +39,7 @@ public class SearchHandler extends HttpServlet {
 		String lastName = request.getParameter("LastName");
 		String gender = request.getParameter("Gender");
 		String Class = request.getParameter("Class");
-		List<User> users = Global.getUsersForInfoTest(firstName, lastName , gender , Class );
-		//List<User> users = Global.getUsersForInfo(request.getParameter("ME"),firstName, lastName , gender , Class );
+		List<User> users = Global.getUsersForInfo(firstName, lastName , gender , Class );
 		response.setContentType("text/xml");
         response.setHeader("Cache-Control", "no-cache");
 		StringBuilder sb = new StringBuilder();

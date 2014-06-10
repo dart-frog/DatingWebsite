@@ -224,28 +224,36 @@ public class Global {
 		return out;
 	}
 	
-	public static List<User> getUsersForInfo(User me,String firstName, String lastName, String gender, String Class){
-		System.out.print("hey");
+	public static List<User> getUsersForInfo(String firstName, String lastName, String gender, String Class){
+		ArrayList params = new ArrayList();
 		//create array of params
 		ArrayList requiredTraits = new ArrayList<String>();  
-		if(!firstName.equals(""))
-			requiredTraits.add("FirstName LIKE ?"); 
+		if(!firstName.equals("")){
+			requiredTraits.add(" FirstName LIKE ?"); 
 			firstName = "%" + firstName + "%";
-		if(!lastName.equals(""))
-			requiredTraits.add("LastName LIKE ?");
+			params.add(firstName);
+		}
+		if(!lastName.equals("")){
+			requiredTraits.add(" LastName LIKE ?");
 			lastName = "%" + lastName + "%";
-		if(!gender.equals("")) 
-			requiredTraits.add("Gender = ?");
-		if(!Class.equals(""))
-			requiredTraits.add("Class = ?");
+			params.add(lastName);
+		}
+		if(!gender.equals("")){ 
+			requiredTraits.add(" Gender = ?");
+			params.add(gender);
+		}
+		if(!Class.equals("")){
+			requiredTraits.add(" Class = ?");
+			params.add(Class);
+		}
 		String query = "SELECT UserID FROM datingsite.UserData";
 		//for array length
 		for(int i = 0; i < requiredTraits.size(); i++){
 			if (i == 0){
-				query += "WHERE";
+				query += " WHERE";
 			}
 			else{
-				query += "AND";	
+				query += " AND";	
 			}
 			query += requiredTraits.get(i);
 		}
@@ -254,13 +262,13 @@ public class Global {
 			//String x = " FirstName LIKE ? AND LastName LIKE ? AND Gender = ?  AND Class = ?;";
 		ArrayList<User> matches = new ArrayList<User>();
 		try {
-			ResultSet rs = executeQueryWithParams(query,firstName, lastName, gender,Class);
+			ResultSet rs = getUsersExecutionHelper(params, query);
 			System.out.println(rs);
 			while(rs.next()){
 				User match = new User(rs.getString("UserID"));
-				if(match != me){
+			
 					matches.add(match);
-				}
+				
 			}
 			System.out.println(matches.toString());
 			return matches;
@@ -269,6 +277,14 @@ public class Global {
 		}
 		return null;
 	}
+	
+	public static ResultSet getUsersExecutionHelper(List<String> params, String query) throws SQLException {
+		String[] paramsArray = new String[params.size()];
+		paramsArray = params.toArray(paramsArray);
+		System.out.println(query);
+		return executeQueryWithParams(query, paramsArray);
+	}
+	
 	public static List<User> getUsersForInfoTest(String firstName, String lastName, String gender, String Class){
 
 		
