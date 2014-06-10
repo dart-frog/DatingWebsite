@@ -56,7 +56,10 @@ function clearUsers() {
 
 function addUser(id, firstName, lastName, Class, gender) {
 	var user = document.createElement("div");
-	user.innerHTML = "Name: " + firstName + " " + lastName + "<br>Class: " + Class + "<br>Gender: " + gender;
+	var link = document.createElement("a");
+	link.setAttribute("href", "/Users/" + id);
+	user.appendChild(link);
+	user.innerHTML = "<br>Class: " + Class + "<br>Gender: " + gender + "<br>";
 	usersList.appendChild(user);
 }
 
