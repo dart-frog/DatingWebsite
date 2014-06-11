@@ -6,14 +6,14 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<style>
  body {
- 	background-image: url("http://expedino.com/wp-content/uploads/2013/12/Morning-Skyline-Wallpaper.jpg");
+ 	background-image: url("http://farm9.staticflickr.com/8166/7353107414_f2eb14356a_b.jpg");
  	background-repeat: no-repeat;
  	background-attachment: fixed;
  	background-position: center;
  	
  }
  h1{
-    text-align: center;
+    text-align: left;
     
  }
 </style>

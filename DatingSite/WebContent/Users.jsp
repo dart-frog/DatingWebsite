@@ -44,6 +44,8 @@ Map<Global.PersonalInfo, String> otherUserInfoMap = otherUser.getAllUserInfo();%
 <p> send messages <p>
 <form action = "MessageHandler" method = "post">
 	Message <input type="text" name="message" required><br>
+	<input type ="hidden" name="sender" >
+	<input type ="hidden" name="receiver">
 	<input type="submit" value="Submit">
 </form>
 

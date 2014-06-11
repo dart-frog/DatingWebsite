@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import datingSite.Global.Message;
+import datingSite.Global.User;
+
 /**
  * Servlet implementation class MessageHandler
  */
@@ -34,7 +37,10 @@ public class MessageHandler extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		String text = request.getParameter("message");
+		User recipient = null;
+		User sender = null;
+		Message m = new Message(sender, recipient, text);
 	}
 
 }
