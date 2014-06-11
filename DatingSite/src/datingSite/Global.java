@@ -165,8 +165,10 @@ public class Global {
 	
 	public static StatusCodes createAndAddNewUser(String email, String password, HttpServletResponse response){ //TODO: Move to RegistrationHandler
 		try{
-			String SQL = "INSERT INTO datingsite.Users (email, password) VALUES (?,?); SCOPE_IDENTITY();"; 
-			ResultSet rs = executeQueryWithParams(SQL, email, password);
+			String SQL = "INSERT INTO datingsite.Users (email, password) VALUES (?, ?);"; 
+			executeQueryWithParamsWithoutResults(SQL, email, password);
+			SQL = "SELECT ID FROM datingsite.Users WHERE email = ?;";
+			ResultSet rs = executeQueryWithParams(SQL, email);
 			rs.next();
 			String userID = rs.getString(1);
 			rs.close();
@@ -458,11 +460,6 @@ public class Global {
 		}
 	}
 
-	/*
-	0 not compatible
-	50 average
-	100 super compatible
-	*/
 
 	public static class User {
 		Map<PersonalInfo, String> info = null;
