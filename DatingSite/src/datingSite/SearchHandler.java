@@ -35,11 +35,12 @@ public class SearchHandler extends HttpServlet {
 		response.setContentType("text/xml;charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+		User myself = new User(request.getParameter("myself"));
 		String firstName = request.getParameter("FirstName");
 		String lastName = request.getParameter("LastName");
 		String gender = request.getParameter("Gender");
 		String Class = request.getParameter("Class");
-		List<User> users = Global.getUsersForInfo(firstName, lastName , gender , Class );
+		List<User> users = Global.getUsersForInfo(myself, firstName, lastName , gender , Class );
 		response.setContentType("text/xml");
         response.setHeader("Cache-Control", "no-cache");
 		StringBuilder sb = new StringBuilder();

@@ -37,10 +37,22 @@ public class MessageHandler extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String text = request.getParameter("message");
-		User recipient = null;
-		User sender = null;
-		Message m = new Message(sender, recipient, text);
+		String recipientID = request.getParameter("recipient");
+		response.sendRedirect("Users.jsp?user=" + recipientID);
+		try {
+			String text = request.getParameter("message");
+			User recipient = new User(request.getParameter("recipient"));
+			User sender = new User (request.getParameter("sender"));
+			Message m = new Message(sender, recipient, text);
+			m.send();
+			Global.setError(request, "Message sent!");
+		} catch(IllegalArgumentException e) {
+			e.printStackTrace();
+			Global.setError(request, "User not found.");
+		} catch(Exception e) {
+			e.printStackTrace();
+			Global.setError(request, "An unknown error occurred.");
+		}
 	}
 
 }

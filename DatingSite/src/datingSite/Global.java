@@ -226,7 +226,7 @@ public class Global {
 		return out;
 	}
 	
-	public static List<User> getUsersForInfo(String firstName, String lastName, String gender, String Class){
+	public static List<User> getUsersForInfo(User myself, String firstName, String lastName, String gender, String Class){
 		ArrayList params = new ArrayList();
 		//create array of params
 		ArrayList requiredTraits = new ArrayList<String>();  
@@ -268,9 +268,9 @@ public class Global {
 			System.out.println(rs);
 			while(rs.next()){
 				User match = new User(rs.getString("UserID"));
-			
+				if (match != myself){
 					matches.add(match);
-				
+				}
 			}
 			System.out.println(matches.toString());
 			return matches;
@@ -434,17 +434,14 @@ public class Global {
 			return sent;
 		}
 		
-		public void send() {
-			String query = "INSERT INTO datingsite.Messages (SenderID, RecipientID, Text) VALUES (?, ?, ?); SELECT SCOPE_IDENTITY;";
-			try {
-				ResultSet rs = executeQueryWithParams(query, sender.getUserID(), recipient.getUserID(), messageText);
-				rs.next();
-				messageID = rs.getString(1);
-				sent = true;
-			} catch(SQLException e) {
-				e.printStackTrace();
-				//TODO: Error handling
-			}
+		public void send() throws SQLException {
+			String query = "INSERT INTO datingsite.Messages (SenderID, RecipientID, Text) VALUES (?, ?, ?);";
+			executeQueryWithParamsWithoutResults(query, sender.getUserID(), recipient.getUserID(), messageText);
+			query = "SELECT SCOPE_IDENTITY();";
+			ResultSet rs = executeQueryWithParams(query);
+			rs.next();
+			messageID = rs.getString(1);
+			sent = true;
 		}
 		
 		public User getSender() {
