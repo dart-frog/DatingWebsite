@@ -5,16 +5,19 @@
 var req;
 var searchField;
 var usersList;
+var currentUser;
 
 
 function init() {
 	searchField = document.getElementById("searchForm");
 	usersList = document.getElementById("listOfUsers");
 	document.getElementById("submitButton").setAttribute("onClick", "return doCompletion()");
+	currentUser = document.getElementById("userID").value;
 }
 
 function doCompletion() {
 	var url = "SearchHandler?";
+	url += "myself=" + currentUser + "&";
 	var field;
 	for(var i = 0; i < 4; i++) {
 		field = searchField[i];
