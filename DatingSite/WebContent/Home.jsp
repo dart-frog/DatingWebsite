@@ -28,8 +28,8 @@
 		<%session.setAttribute("error", null); %>
 	<%} %>
 	<H1>Welcome to Roosevelts Dating Website</H1>
-	<p>If you are a new user please register</p>
-	<a href= "Register.jsp"> Register</a>
+	<p>If you are a new user, please <a href= "Register.jsp"> Register</a></p>
+	
 	<p>Log in</p>
 	<form action="LogInHandler" method="post">
 		Email: <input type="text" name="email" required><br>
