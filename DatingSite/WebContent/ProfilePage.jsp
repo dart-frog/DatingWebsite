@@ -35,6 +35,7 @@ if(user == null) {
 			<%for(Global.PersonalInfo pi : Global.PersonalInfo.values()) { %>
 				<%=pi.getHTMLInputTag(user) %>
 			<%} %>
+			Picture (Input as URL) <input name = "pictureURL" type="url"><br>
 			<input type="submit" value="Submit">
 		</form>
 	</div>

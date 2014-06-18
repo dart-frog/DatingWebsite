@@ -527,8 +527,16 @@ public class Global {
 			String query;
 			try {
 				for(PersonalInfo pi : infoMap.keySet()) {
-					query = String.format(queryTemplate, pi.getVarName());
-					Global.executeQueryWithParamsWithoutResults(query, infoMap.get(pi), userID);
+					
+						query = String.format(queryTemplate, pi.getVarName());
+						Global.executeQueryWithParamsWithoutResults(query, infoMap.get(pi), userID);
+					
+						
+				
+						query = String.format(queryTemplate, pi.getVarName());
+						Global.executeQueryWithParamsWithoutResults("UPDATE datingstite.Pictures Set PictureURL WHERE UserID = ?;", userID);
+					
+					
 				}
 				this.info = getAllUserInfo();
 				return StatusCodes.Success;

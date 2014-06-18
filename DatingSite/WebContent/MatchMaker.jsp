@@ -23,7 +23,7 @@ try {
 	<% if(pi == Global.PersonalInfo.Birthday) continue; %>
 	<%= pi.getBlankHTMLInputTag().replace("required", "") %>
 <% } %>
-<input id="userID" type = "hidden" name="myself" value="<%=currentUser.getUserID() %>"> 
+<input type = "hidden" name="myself" value="<%=currentUser.getUserID() %>"> 
 <input id="submitButton" type="button" value="Submit">
 </form>
 
