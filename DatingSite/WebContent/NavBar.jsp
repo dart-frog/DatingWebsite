@@ -4,11 +4,21 @@
 <html>
 <head>
 <style>
+div.sidebar{
+	margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+}
 li{
 	display:inline;
-	margin: 10;
-    padding: 10;
+	margin: 0;
+    padding: 0;
+    
 }
+ul li{
+margin: 10px;
+}
+
 ul {
     list-style-type: none;
     
@@ -19,16 +29,16 @@ a {font-size:125%}
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 </head>
 <body>
-
+	<div class = "sidebar">
 	<ul> 
-		<li> <a href= 'ProfilePage.jsp'> Account Page </a> </li>
-		<li> <a href= 'MessageHub.jsp'> Message Hub </a> </li> 
-		<li> <a href= 'MatchMaker.jsp'> Match Maker </a> </li> 
-		<li> <a href= 'Lists.jsp'> Lists </a> </li> 
-		<li> <form action = "LogOutHandler" method = "post">
+		<li> <a href= 'ProfilePage.jsp'> Account Page</a> </li>
+		<li>   <a href= 'MessageHub.jsp'> Message Hub</a>  </li> 
+		<li>   <a href= 'MatchMaker.jsp'> Search</a></li> 
+		<li>   <form action = "LogOutHandler" method = "post">
 		<button type = "submit"> Log out</button>
 		</form> </li>
 	</ul>
+	</div>
 
 </body>
 </html>
