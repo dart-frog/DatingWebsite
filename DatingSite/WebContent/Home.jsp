@@ -16,6 +16,19 @@
     text-align: center;
     
  }
+ p{
+ 	text-align: center;
+ }
+ form{
+ 	align: center;
+ }
+ div.LogIn{
+ 	margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+ 
+    align: right;
+ }
 </style>
 <title>Roosevelt Dating Website</title>
 <%if(Global.isSessionValid(request)){ %>
@@ -31,10 +44,12 @@
 	<p>If you are a new user, please <a href= "Register.jsp"> Register</a></p>
 	
 	<p>Log in</p>
+	<div class="LogIn">
 	<form action="LogInHandler" method="post">
 		Email: <input type="text" name="email" required><br>
 		Password: <input type="password" name="password" required><br>
-		<input type="submit" value="Submit">
+		<input type="submit" value="Submit"><br>
 	</form>
+	</div>
 </body>
 </html>
